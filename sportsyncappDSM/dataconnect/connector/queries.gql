@@ -1,0 +1,16 @@
+# Obtiene los datos del usuario actualmente autenticado, usando su
+# propio uid (auth.uid) como llave primaria por defecto.
+
+query GetCurrentUsuario($id: String! = "auth.uid") @auth(level: USER) {
+  usuarios(id: $id) {
+    id
+    nombre
+    apellido
+    correo
+    fotoPerfil
+    fechaNacimiento
+    rol {
+      nombreRol
+    }
+  }
+}

@@ -1,0 +1,13 @@
+specVersion: "v1"
+serviceId: "sportsyncapp-ec689-2-service"
+location: "us-east4"
+schemas:
+  - source: "./schema"
+    datasource:
+      postgresql:
+        database: "sportsyncapp-ec689-2-database"
+        cloudSql:
+          instanceId: "sportsyncapp-ec689-instance"
+          # schemaValidation: "STRICT"     # STRICT mode makes Postgres schema match Data Connect exactly.
+          # schemaValidation: "COMPATIBLE" # COMPATIBLE mode makes Postgres schema compatible with Data Connect.
+connectorDirs: ["./connector"]

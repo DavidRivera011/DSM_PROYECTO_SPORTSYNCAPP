@@ -1,0 +1,91 @@
+type Roles @table {
+  nombreRol: String!
+}
+
+type Usuarios @table {
+  id: String! @default(expr: "auth.uid")
+  nombre: String!
+  apellido: String!
+  correo: String! @unique
+  fotoPerfil: String
+  fechaNacimiento: Date!
+  rol: Roles!
+}
+
+type Instituciones @table {
+  nombre: String!
+  logo: String
+}
+
+type Deportes @table {
+  nombreDeporte: String!
+  fotoDeporte: String!
+}
+
+type Equipos @table {
+  institucion: Instituciones
+  deporte: Deportes
+  nombreEquipo: String!
+}
+
+type TipoPerfil @table {
+  nombrePerfil: String!
+}
+
+type PerfilesDeportivos @table {
+  usuario: Usuarios
+  institucion: Instituciones
+  equipo: Equipos
+  deporte: Deportes
+  nombreDeportivo: String
+  tipoPerfil: TipoPerfil
+  puntosTotales: Int @default(value: 0)
+  fotoDeportiva: String
+}
+
+type EstadosEvento @table {
+  nombreEstado: String
+}
+
+type EstadosPartidos @table {
+  nombreEstado: String
+}
+
+type Eventos @table {
+  deporte: Deportes
+  institucion: Instituciones
+  nombre: String!
+  fecha: Date!
+  estado: EstadosEvento!
+}
+
+type Partidos @table {
+  evento: Eventos
+  equipoLocal: Equipos
+  equipoVisitante: Equipos
+  marcadorLocal: Int @default(value: 0)
+  marcadorVisitante: Int @default(value: 0)
+  fecha: Date
+  hora: String
+  estado: EstadosPartidos
+}
+
+type ParticipantesPartido @table {
+  partido: Partidos!
+  perfil: PerfilesDeportivos!
+  titular: Boolean @default(value: true)
+}
+
+type EstadosInscripciones @table {
+  nombreEstado: String
+}
+
+type Inscripciones @table {
+  evento: Eventos!
+  equipo: Equipos
+  perfil: PerfilesDeportivos
+  usuarioSolicitante: Usuarios!
+  usuarioRevisor: Usuarios
+  fechaInscripcion: Date!
+  estado: EstadosInscripciones!
+}
