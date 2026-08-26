@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!-- Colores SportSync -->
+    <color name="fondo_beige">#FCEECA</color>
+    <color name="tarjeta_cafe">#6D3A29</color>
+    <color name="boton_naranja">#FF6B35</color>
+    <color name="boton_naranja_claro">#FFB270</color>
+    <color name="texto_blanco">#FFFFFF</color>
+    <color name="texto_negro">#1A1A1A</color>
+
 </resources>

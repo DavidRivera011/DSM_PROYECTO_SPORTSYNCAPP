@@ -1,118 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:background="@color/fondo_beige"
     android:fitsSystemWindows="true"
-    android:background="#FFFFFF"
     tools:context=".RegisterActivity">
 
-    <!-- TÍTULO -->
+    <!-- LOGO PEQUEÑO SUPERIOR -->
 
-    <TextView
-        android:id="@+id/tvTitulo"
-        android:layout_width="match_parent"
+    <!-- TARJETA CAFÉ CENTRAL -->
+
+    <!-- MENSAJE DE ERROR -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/bg_input_blanco"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_gallery"
+            app:tint="@color/tarjeta_cafe" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardCafeRegistro"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="28dp"
-        android:gravity="center"
-        android:text="Crear cuenta"
-        android:textColor="#1A1A1A"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/bg_tarjeta_cafe"
+        android:elevation="20dp"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoContainer">
 
-    <!-- NOMBRE -->
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Crear cuenta"
+            android:textColor="@color/texto_blanco"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="name"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
-        android:maxLength="50"
-        android:padding="12dp"
-        android:singleLine="true" />
+        <!-- NOMBRE -->
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="14dp"
+            android:autofillHints="name"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="Nombre"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
 
-    <!-- APELLIDO -->
+        <!-- APELLIDO -->
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints="name"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="Apellido"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/etNombre" />
 
-    <EditText
-        android:id="@+id/etApellido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="name"
-        android:hint="Apellido"
-        android:inputType="textPersonName"
-        android:maxLength="50"
-        android:padding="12dp"
-        android:singleLine="true" />
+        <!-- CORREO -->
+        <EditText
+            android:id="@+id/etCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="Correo electrónico"
+            android:inputType="textEmailAddress"
+            android:maxLength="100"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/etApellido" />
 
-    <!-- CORREO -->
+        <!-- CONTRASEÑA -->
+        <EditText
+            android:id="@+id/etContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints="password"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="Contraseña (mínimo 6 caracteres)"
+            android:inputType="textPassword"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/etCorreo" />
 
-    <EditText
-        android:id="@+id/etCorreo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="emailAddress"
-        android:hint="Correo electrónico"
-        android:inputType="textEmailAddress"
-        android:maxLength="100"
-        android:padding="12dp"
-        android:singleLine="true" />
+        <!-- FECHA DE NACIMIENTO -->
+        <EditText
+            android:id="@+id/etFechaNacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="Fecha de nacimiento (dd/MM/yyyy)"
+            android:inputType="date"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/etContrasena" />
 
-    <!-- CONTRASEÑA -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/etContrasena"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="password"
-        android:hint="Contraseña (mínimo 6 caracteres)"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:singleLine="true" />
-
-    <!-- FECHA DE NACIMIENTO -->
-
-    <EditText
-        android:id="@+id/etFechaNacimiento"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:hint="Fecha de nacimiento (dd/MM/yyyy)"
-        android:inputType="date"
-        android:padding="12dp"
-        android:singleLine="true" />
-
-    <!-- BOTÓN -->
-
-    <Button
-        android:id="@+id/btnRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:backgroundTint="#1565C0"
-        android:text="Registrarme"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
-
-    <!-- ERROR -->
-
+    <!-- CONTENEDOR DE BOTONES INFERIORES -->
     <TextView
         android:id="@+id/tvError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text=""
+        android:minHeight="16dp"
         android:textColor="#D32F2F"
-        android:textSize="13sp" />
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/cardCafeRegistro"
+        tools:layout_editor_absoluteX="32dp" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutBotonesRegistro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="36dp"
+        android:baselineAligned="false"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="20dp"
+        android:weightSum="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvError">
+
+        <!-- BOTÓN REGISTRARME (ID Respetado de Julio) -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_boton_naranja"
+            android:elevation="8dp"
+            android:fontFamily="sans-serif-black"
+            android:outlineProvider="background"
+            android:stateListAnimator="@null"
+            android:text="Registrarme"
+            android:textAllCaps="false"
+            android:textColor="@color/texto_blanco"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

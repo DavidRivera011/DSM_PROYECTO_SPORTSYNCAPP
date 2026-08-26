@@ -5,142 +5,229 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:padding="32dp"
+    android:background="@color/fondo_beige"
+    android:fitsSystemWindows="true"
     tools:context=".LoginActivity">
 
-    <!-- ================= TITULO ================= -->
-
-    <TextView
-        android:id="@+id/tvTitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="SportSync"
-        android:textColor="#1A1A1A"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <!-- LOGO PLACEHOLDER PREMIUM -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintVertical_bias="0.15" />
-
-    <TextView
-        android:id="@+id/tvSubtitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="Institucional"
-        android:textColor="#757575"
-        android:textSize="16sp"
+        android:background="@drawable/bg_input_blanco"
+        android:elevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!-- ================= FORMULARIO ================= -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_gallery"
+            app:tint="@color/tarjeta_cafe" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/tvLabelCorreo"
+    <!-- TARJETA CAFÉ PREMIUM -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardCafe"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Correo electronico"
-        android:textColor="#424242"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/etCorreo"
-        app:layout_constraintStart_toStartOf="@id/etCorreo"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitulo" />
-
-    <EditText
-        android:id="@+id/etCorreo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:autofillHints="emailAddress"
-        android:background="@android:drawable/edit_text"
-        android:hint="ejemplo@correo.com"
-        android:imeOptions="actionNext"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:singleLine="true"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_tarjeta_cafe"
+        android:elevation="24dp"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelCorreo" />
+        app:layout_constraintTop_toBottomOf="@id/logoContainer">
 
-    <TextView
-        android:id="@+id/tvLabelContrasena"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Contrasena"
-        android:textColor="#424242"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/etContrasena"
-        app:layout_constraintStart_toStartOf="@id/etContrasena"
-        app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Inicio de sesión"
+            android:textColor="@color/texto_blanco"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etContrasena"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:autofillHints="password"
-        android:background="@android:drawable/edit_text"
-        android:hint="Ingrese su contrasena"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelContrasena" />
+        <TextView
+            android:id="@+id/tvLabelCorreo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Correo electrónico"
+            android:textColor="@color/texto_blanco"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
 
-    <!-- ================= MENSAJE DE ERROR ================= -->
+        <EditText
+            android:id="@+id/etCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="ejemplo@correo.com"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="20dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelCorreo" />
 
+        <TextView
+            android:id="@+id/tvLabelContrasena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Contraseña"
+            android:textColor="@color/texto_blanco"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+
+        <EditText
+            android:id="@+id/etContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_blanco"
+            android:elevation="4dp"
+            android:fontFamily="sans-serif"
+            android:hint="••••••••"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp"
+            android:singleLine="true"
+            android:textColor="@color/texto_negro"
+            android:textColorHint="#9E9E9E"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelContrasena" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- MENSAJE DE ERROR -->
     <TextView
         android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:minHeight="20dp"
+        android:textColor="#D32F2F"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/cardCafe" />
+
+    <!-- CONTENEDOR DE BOTONES -->
+
+    <!-- ENLACE A REGISTRO -->
+
+    <!-- CONTENEDOR DE BOTONES -->
+    <LinearLayout
+        android:id="@+id/layoutBotones"
+        android:baselineAligned="false"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#D32F2F"
-        android:textSize="13sp"
+        android:layout_marginHorizontal="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="24dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etContrasena" />
+        app:layout_constraintTop_toBottomOf="@id/tvError">
 
-    <!-- ================= BOTON ================= -->
+        <!-- BOTÓN CONFIRMAR -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnIniciarSesion"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_boton_naranja"
+            android:outlineProvider="background"
+            android:elevation="8dp"
+            android:fontFamily="sans-serif-black"
+            android:stateListAnimator="@null"
+            android:text="Confirmar"
+            android:textAllCaps="false"
+            android:textColor="@color/texto_blanco"
+            android:textSize="15sp" />
 
-    <Button
-        android:id="@+id/btnIniciarSesion"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#1565C0"
-        android:text="Iniciar sesion"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvError" />
+        <!-- BOTÓN OLVIDÉ MI CONTRASEÑA -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOlvideContrasena"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_boton_naranja"
+            android:backgroundTint="@color/boton_naranja_claro"
+            android:outlineProvider="background"
+            android:elevation="8dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="-2dp"
+            android:paddingHorizontal="4dp"
+            android:stateListAnimator="@null"
+            android:text="Olvidé mi\ncontraseña"
+            android:textAllCaps="false"
+            android:textColor="@color/texto_blanco"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform" />
+    </LinearLayout>
 
-    <!-- ================= ENLACE A REGISTRO ================= -->
-
+    <!-- TÉRMINOS Y CONDICIONES FOOTER -->
+    <!-- ENLACE A REGISTRO -->
     <TextView
         android:id="@+id/tvIrARegistro"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="¿No tienes cuenta? Registrate"
-        android:textColor="#1565C0"
-        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif-black"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="¿No tienes cuenta? Crea una aquí"
+        android:textColor="@color/boton_naranja"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnIniciarSesion" />
+        app:layout_constraintTop_toBottomOf="@id/layoutBotones" />
+
+    <TextView
+        android:id="@+id/tvTerminos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Términos y condiciones"
+        android:textColor="#9E9E9E"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

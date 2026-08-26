@@ -21,10 +21,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -48,6 +48,9 @@ class LoginActivity : AppCompatActivity() {
         binding.tvIrARegistro.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+
+
     }
 
     private fun validarYIniciarSesion() {
