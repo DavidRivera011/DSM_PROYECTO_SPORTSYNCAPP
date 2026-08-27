@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
+import com.google.firebase.auth.FirebaseAuth
 
 class UsuarioRepository {
 
@@ -109,8 +110,30 @@ class UsuarioRepository {
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+                if (uid == null) {
+                    Log.w(
+                        TAG,
+                        "No hay usuario autenticado"
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        alTerminar(null)
+                    }
+
+                    return@launch
+                }
+
+                Log.i(
+                    TAG,
+                    "Buscando usuario en SQL Connect con UID: $uid"
+                )
+
                 val resultado =
-                    conector.getCurrentUsuario.execute { }
+                    conector.getCurrentUsuario.execute {
+                        id = uid
+                    }
 
                 val datos =
                     resultado.data?.usuarios
@@ -119,7 +142,7 @@ class UsuarioRepository {
 
                     Log.w(
                         TAG,
-                        "No existe registro del usuario en SQL Connect"
+                        "No existe registro para UID: $uid"
                     )
 
                     withContext(Dispatchers.Main) {
@@ -140,7 +163,7 @@ class UsuarioRepository {
 
                 Log.i(
                     TAG,
-                    "Usuario obtenido: ${usuario.nombre}"
+                    "Usuario encontrado: ${usuario.nombre}"
                 )
 
                 withContext(Dispatchers.Main) {

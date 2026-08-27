@@ -52,14 +52,13 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
 
-    // Firebase AUTH Y DATACONNECT
+    // Firebase AUTH Y DATACONNECT / GOOGLESERVICES
     implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
     implementation("com.google.firebase:firebase-auth")
-
-    // Firebase Data Connect
     implementation("com.google.firebase:firebase-dataconnect:16.0.0-beta04")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

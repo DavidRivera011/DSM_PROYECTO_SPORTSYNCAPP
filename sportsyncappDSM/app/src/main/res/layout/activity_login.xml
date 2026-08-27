@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondo_beige"
+    android:fillViewport="true"
     android:fitsSystemWindows="true"
+    android:overScrollMode="ifContentScrolls"
     tools:context=".LoginActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
 
     <!-- LOGO PLACEHOLDER PREMIUM -->
     <FrameLayout
         android:id="@+id/logoContainer"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/bg_input_blanco"
-        android:elevation="8dp"
+        android:elevation="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
-            android:src="@android:drawable/ic_menu_gallery"
-            app:tint="@color/tarjeta_cafe" />
+            android:src="@drawable/logo_sportsyncapp" />
+
     </FrameLayout>
 
     <!-- TARJETA CAFÉ PREMIUM -->
@@ -36,15 +42,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="145dp"
         android:background="@drawable/bg_tarjeta_cafe"
         android:elevation="24dp"
         android:paddingHorizontal="28dp"
         android:paddingTop="36dp"
-        android:paddingBottom="48dp"
+        android:paddingBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoContainer">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvTitulo"
@@ -116,6 +122,20 @@
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/tvLabelContrasena" />
 
+        <!-- RECORDARME -->
+        <CheckBox
+            android:id="@+id/cbRecordar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:buttonTint="@color/texto_blanco"
+            android:fontFamily="sans-serif-medium"
+            android:text="Recordarme"
+            android:textColor="@color/texto_blanco"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etContrasena" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- MENSAJE DE ERROR -->
@@ -133,10 +153,6 @@
         app:layout_constraintTop_toBottomOf="@id/cardCafe" />
 
     <!-- CONTENEDOR DE BOTONES -->
-
-    <!-- ENLACE A REGISTRO -->
-
-    <!-- CONTENEDOR DE BOTONES -->
     <LinearLayout
         android:id="@+id/layoutBotones"
         android:baselineAligned="false"
@@ -144,7 +160,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:paddingHorizontal="16dp"
-        android:paddingBottom="24dp"
+        android:paddingBottom="16dp"
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
@@ -195,7 +211,6 @@
             app:autoSizeTextType="uniform" />
     </LinearLayout>
 
-    <!-- TÉRMINOS Y CONDICIONES FOOTER -->
     <!-- ENLACE A REGISTRO -->
     <TextView
         android:id="@+id/tvIrARegistro"
@@ -216,18 +231,78 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutBotones" />
 
-    <TextView
-        android:id="@+id/tvTerminos"
-        android:layout_width="wrap_content"
+    <!-- SEPARADOR "O CONTINUA CON" -->
+    <LinearLayout
+        android:id="@+id/layoutSeparador"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Términos y condiciones"
-        android:textColor="#9E9E9E"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvIrARegistro">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#D0C4B0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="o continúa con"
+            android:textColor="#8A7A66"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#D0C4B0" />
+
+    </LinearLayout>
+
+    <!-- BOTONES SOCIALES -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGoogle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/texto_blanco"
+        android:elevation="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Continuar con Google"
+        android:textAllCaps="false"
+        android:textColor="@color/texto_negro"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSeparador" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGitHub"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#24292F"
+        android:elevation="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Continuar con GitHub"
+        android:textAllCaps="false"
+        android:textColor="@color/texto_blanco"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
