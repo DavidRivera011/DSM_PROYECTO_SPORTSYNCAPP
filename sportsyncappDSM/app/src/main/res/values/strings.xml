@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">SportSyncAPP</string>
+    <string name="app_name">SportSync</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="correo_electr_nico">Correo electrónico</string>
+    <string name="contrase_a_m_nimo_6_caracteres">Contraseña (mínimo 6 caracteres)</string>
+    <string name="digite_de_nuevo_la_contrase_a">Digite de nuevo la contraseña</string>
+    <string name="fecha_de_nacimiento">Fecha de nacimiento</string>
+    <string name="registrarme">Registrarme</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="todo">TODO</string>
+    <string name="logo_de_sportsync">Logo de SportSync</string>
+    <string name="bienvenido">Bienvenido</string>
+    <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="olvid_mi_ncontrase_a">Olvidé mi\ncontraseña</string>
+    <string name="no_tienes_cuenta_crea_una_aqu">¿No tienes cuenta? Crea una aquí</string>
+    <string name="o_contin_a_con">o continúa con</string>
+    <string name="continuar_con_google">Continuar con Google</string>
+    <string name="continuar_con_github">Continuar con GitHub</string>
 </resources>

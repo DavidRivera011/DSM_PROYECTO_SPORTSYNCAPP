@@ -8,10 +8,6 @@ plugins {
 android {
     namespace = "com.example.sportsyncapp"
 
-    buildFeatures {
-        viewBinding = true
-    }
-
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -57,8 +53,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-dataconnect:16.0.0-beta04")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

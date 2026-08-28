@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--PERMISO DE INTERNET PARA ACCEDER A LA DB DE FIREBASE-->
+    <!-- Permiso de Internet para Firebase y SQL Connect -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,24 +13,33 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.SportSyncAPP">
-
-
+        <!-- Splash que dicta si el usuario debe ir al main o al login -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
+        <!-- Pantalla de inicio de sesión -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- Pantalla principal -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
+        <!-- Pantalla de registro -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

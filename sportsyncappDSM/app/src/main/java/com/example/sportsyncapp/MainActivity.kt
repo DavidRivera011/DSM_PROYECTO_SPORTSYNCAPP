@@ -25,11 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Consulta Firestore para mostrar el nombre completo del usuario.
-     * Si el documento todavia no existe (usuario creado solo en
-     * Authentication, sin perfil en Firestore), muestra el correo.
-     */
+
     private fun cargarDatosUsuario() {
         val correo = FirebaseAuth.getInstance().currentUser?.email ?: "usuario"
 

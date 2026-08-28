@@ -1,25 +1,32 @@
 package com.example.sportsyncapp
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import com.example.sportsyncapp.databinding.ActivityLoginBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
-import android.app.DatePickerDialog
-import com.google.firebase.auth.FirebaseUser
-import java.util.Calendar
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import kotlinx.coroutines.launch
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+import android.util.Patterns
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,30 +34,17 @@ class LoginActivity : AppCompatActivity() {
         private const val TAG = "LoginActivity"
         private const val PREFS_NAME = "login_prefs"
         private const val KEY_CORREO_RECORDADO = "correo_recordado"
+        private const val KEY_CONTRASENA_RECORDADA = "contrasena_recordada"
     }
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var credentialManager: CredentialManager
     private val usuarioRepository = UsuarioRepository()
+    private var verificandoSesion = false
 
     private val prefs by lazy { getSharedPreferences(PREFS_NAME, MODE_PRIVATE) }
 
-    // Recibe el resultado de la pantalla de Google Sign-In
-    private val googleSignInLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { resultado ->
-        if (resultado.resultCode == Activity.RESULT_OK) {
-            val tarea = GoogleSignIn.getSignedInAccountFromIntent(resultado.data)
-            try {
-                val cuenta = tarea.getResult(ApiException::class.java)
-                autenticarConGoogle(cuenta.idToken!!)
-            } catch (error: ApiException) {
-                Log.w(TAG, "Fallo el inicio de sesion con Google", error)
-                mostrarError("No se pudo iniciar sesion con Google")
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,16 +56,90 @@ class LoginActivity : AppCompatActivity() {
 
         configurarGoogleSignIn()
         cargarCorreoRecordado()
+        cargarContrasenaRecordado()
         configurarListeners()
     }
-
+    // Este OnStart lo que va a hacer es verificar si el usuario ya esta logueado
+    // y si tambien el usuario existe en la base de datos, no solo en Authentication
     override fun onStart() {
         super.onStart()
-        // Si ya existe una sesion activa se omite el login
-        auth.currentUser?.let { usuario ->
-            Log.i(TAG, "Sesion ya activa para: ${usuario.email}")
-            irAMain()
+
+        Log.d(
+            TAG,
+            "onStart: LoginActivity iniciada"
+        )
+
+        val usuario = auth.currentUser
+
+        if (usuario != null && !verificandoSesion) {
+
+            Log.i(
+                TAG,
+                "Sesión activa para: ${usuario.email}"
+            )
+
+            verificarSesionActual()
         }
+    }
+    private fun verificarSesionActual() {
+
+        verificandoSesion = true
+
+        usuarioRepository.obtenerUsuarioActual { usuarioExistente ->
+
+            verificandoSesion = false
+
+            if (usuarioExistente != null) {
+
+                Log.i(
+                    TAG,
+                    "Usuario encontrado en SQL Connect"
+                )
+
+                irAMain()
+
+            } else {
+
+                Log.i(
+                    TAG,
+                    "Existe sesión en Firebase pero no en SQL Connect"
+                )
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        Log.d(
+            TAG,
+            "LoginActivity reanudada"
+        )
+    }
+    override fun onPause() {
+        super.onPause()
+
+        Log.d(
+            TAG,
+            "LoginActivity pausada"
+        )
+    }
+    override fun onStop() {
+        super.onStop()
+
+        Log.d(
+            TAG,
+            "LoginActivity detenida"
+        )
+    }
+    override fun onSaveInstanceState(
+        outState: Bundle
+    ) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString(
+            "correo",
+            binding.etCorreo.text.toString()
+        )
     }
 
     // ---------------------------------------------------------------
@@ -79,18 +147,20 @@ class LoginActivity : AppCompatActivity() {
     // ---------------------------------------------------------------
 
     private fun configurarGoogleSignIn() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        credentialManager = CredentialManager.create(this)
     }
 
     private fun cargarCorreoRecordado() {
         val correoGuardado = prefs.getString(KEY_CORREO_RECORDADO, null)
         if (correoGuardado != null) {
             binding.etCorreo.setText(correoGuardado)
+            binding.cbRecordar.isChecked = true
+        }
+    }
+    private fun cargarContrasenaRecordado() {
+        val contrasenaGuardado = prefs.getString(KEY_CONTRASENA_RECORDADA, null)
+        if (contrasenaGuardado != null) {
+            binding.etContrasena.setText(contrasenaGuardado)
             binding.cbRecordar.isChecked = true
         }
     }
@@ -109,7 +179,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnGoogle.setOnClickListener {
-            googleSignInLauncher.launch(googleSignInClient.signInIntent)
+            iniciarSesionConGoogle()
         }
 
         binding.btnGitHub.setOnClickListener {
@@ -122,23 +192,41 @@ class LoginActivity : AppCompatActivity() {
     // ---------------------------------------------------------------
 
     private fun validarYIniciarSesion() {
-        val correo = binding.etCorreo.text.toString().trim()
-        val contrasena = binding.etContrasena.text.toString().trim()
+
+        val correo =
+            binding.etCorreo.text.toString().trim()
+
+        val contrasena =
+            binding.etContrasena.text.toString()
 
         limpiarError()
 
         when {
             correo.isEmpty() -> {
-                mostrarError("Ingrese su correo electronico")
+                mostrarError("Ingrese su correo electrónico")
+                return
+            }
+            !Patterns.EMAIL_ADDRESS
+                .matcher(correo)
+                .matches() -> {
+
+                mostrarError("Ingrese un correo electrónico válido")
                 return
             }
             contrasena.isEmpty() -> {
-                mostrarError("Ingrese su contrasena")
+                mostrarError("Ingrese su contraseña")
+                return
+            }
+            contrasena.length < 6 -> {
+                mostrarError("La contraseña debe tener al menos 6 caracteres")
                 return
             }
         }
 
-        iniciarSesion(correo, contrasena)
+        iniciarSesion(
+            correo,
+            contrasena
+        )
     }
 
     private fun iniciarSesion(correo: String, contrasena: String) {
@@ -151,6 +239,7 @@ class LoginActivity : AppCompatActivity() {
                 if (tarea.isSuccessful) {
                     Log.i(TAG, "Inicio de sesion exitoso para $correo")
                     guardarOEliminarCorreoRecordado(correo)
+                    guardarOEliminarContrasenaRecordada(contrasena)
                     Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
                     irAMain()
                 } else {
@@ -160,12 +249,28 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    // AQUI SE RECUERDA EL CORREO 
+    // AQUI SE RECUERDA EL CORREO Y LA CONTRASEÑA
     private fun guardarOEliminarCorreoRecordado(correo: String) {
         if (binding.cbRecordar.isChecked) {
-            prefs.edit().putString(KEY_CORREO_RECORDADO, correo).apply()
+            prefs.edit {
+                putString(KEY_CORREO_RECORDADO, correo)
+            }
         } else {
-            prefs.edit().remove(KEY_CORREO_RECORDADO).apply()
+            prefs.edit {
+                remove(KEY_CORREO_RECORDADO)
+            }
+        }
+    }
+
+    private fun guardarOEliminarContrasenaRecordada(contrasena: String) {
+        if (binding.cbRecordar.isChecked) {
+            prefs.edit {
+                putString(KEY_CONTRASENA_RECORDADA, contrasena)
+            }
+        } else {
+            prefs.edit {
+                remove(KEY_CONTRASENA_RECORDADA)
+            }
         }
     }
 
@@ -218,12 +323,101 @@ class LoginActivity : AppCompatActivity() {
     // Login con Google
     // ---------------------------------------------------------------
 
-    private fun autenticarConGoogle(idToken: String) {
+    private fun iniciarSesionConGoogle() {
 
         establecerCargando(true)
 
+        val googleIdOption =
+            GetGoogleIdOption.Builder()
+                .setServerClientId(
+                    getString(R.string.default_web_client_id)
+                )
+                .setFilterByAuthorizedAccounts(false)
+                .build()
+
+        val request =
+            GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+        lifecycleScope.launch {
+
+            try {
+
+                val result =
+                    credentialManager.getCredential(
+                        context = this@LoginActivity,
+                        request = request
+                    )
+
+                val credential = result.credential
+
+                if (
+                    credential is androidx.credentials.CustomCredential &&
+                    credential.type ==
+                    GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+                ) {
+
+                    val googleCredential =
+                        try {
+                            GoogleIdTokenCredential
+                                .createFrom(credential.data)
+
+                        } catch (e: GoogleIdTokenParsingException) {
+
+                            Log.e(
+                                TAG,
+                                "No se pudo interpretar la credencial de Google",
+                                e
+                            )
+
+                            establecerCargando(false)
+
+                            mostrarError(
+                                "No se pudo obtener la cuenta de Google"
+                            )
+
+                            return@launch
+                        }
+
+                    val idToken =
+                        googleCredential.idToken
+
+                    autenticarFirebaseConGoogle(idToken)
+
+                } else {
+
+                    establecerCargando(false)
+
+                    mostrarError(
+                        "La credencial obtenida no es de Google"
+                    )
+                }
+
+            } catch (e: GetCredentialException) {
+
+                establecerCargando(false)
+
+                Log.e(
+                    TAG,
+                    "Error obteniendo credencial de Google",
+                    e
+                )
+
+                mostrarError(
+                    "No se pudo iniciar sesión con Google"
+                )
+            }
+        }
+    }
+
+    private fun autenticarFirebaseConGoogle(idToken: String) {
+
         val credencial =
-            GoogleAuthProvider.getCredential(idToken, null)
+            GoogleAuthProvider.getCredential(
+                idToken,
+                null
+            )
 
         auth.signInWithCredential(credencial)
             .addOnCompleteListener(this) { tarea ->
@@ -232,7 +426,7 @@ class LoginActivity : AppCompatActivity() {
 
                     Log.i(
                         TAG,
-                        "Inicio de sesion con Google exitoso"
+                        "Inicio de sesión con Google exitoso"
                     )
 
                     verificarUsuarioSQL()
@@ -241,14 +435,14 @@ class LoginActivity : AppCompatActivity() {
 
                     establecerCargando(false)
 
-                    Log.w(
+                    Log.e(
                         TAG,
-                        "Fallo el inicio de sesion con Google",
+                        "Falló autenticación de Firebase con Google",
                         tarea.exception
                     )
 
                     mostrarError(
-                        "No se pudo iniciar sesion con Google"
+                        "No se pudo iniciar sesión con Google"
                     )
                 }
             }
@@ -272,9 +466,32 @@ class LoginActivity : AppCompatActivity() {
                 verificarUsuarioSQL()
             }
             .addOnFailureListener { error ->
+
                 establecerCargando(false)
-                Log.w(TAG, "Fallo el inicio de sesion con $idProveedor", error)
-                mostrarError("No se pudo iniciar sesion con ese proveedor")
+
+                Log.e(
+                    TAG,
+                    "Error de autenticación con $idProveedor",
+                    error
+                )
+
+                when (error) {
+
+                    is com.google.firebase.auth.FirebaseAuthUserCollisionException -> {
+
+                        mostrarError(
+                            "Ya existe una cuenta con ese correo. " +
+                                    "Debes iniciar sesión con el método original."
+                        )
+                    }
+
+                    else -> {
+
+                        mostrarError(
+                            "No se pudo iniciar sesión con GitHub"
+                        )
+                    }
+                }
             }
     }
 
@@ -319,11 +536,13 @@ class LoginActivity : AppCompatActivity() {
             usuarioFirebase.displayName?.trim().orEmpty()
 
         val partesNombre =
-            nombreCompleto.split(" ")
+            nombreCompleto
+                .split("\\s+".toRegex())
+                .filter { it.isNotBlank() }
 
         val nombre =
             if (partesNombre.isNotEmpty()) {
-                partesNombre[0]
+                partesNombre.first()
             } else {
                 "Usuario"
             }
@@ -340,57 +559,141 @@ class LoginActivity : AppCompatActivity() {
 
         if (correo.isNullOrEmpty()) {
             establecerCargando(false)
+
             mostrarError(
                 "El proveedor no proporcionó un correo electrónico"
             )
+
             return
         }
 
-        val inputFecha = EditText(this)
+        mostrarSelectorFecha(
+            nombre = nombre,
+            apellido = apellido,
+            correo = correo,
+            fotoPerfil = usuarioFirebase.photoUrl?.toString()
+        )
+    }
+    private fun mostrarSelectorFecha(
+        nombre: String,
+        apellido: String,
+        correo: String,
+        fotoPerfil: String?
+    ) {
 
-        inputFecha.hint = "Fecha de nacimiento (dd/MM/yyyy)"
-        inputFecha.inputType = android.text.InputType.TYPE_CLASS_DATETIME
+        val constraints =
+            CalendarConstraints.Builder()
+                .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-        AlertDialog.Builder(this)
-            .setTitle("Completa tu perfil")
-            .setMessage(
-                "Necesitamos tu fecha de nacimiento para completar tu registro."
-            )
-            .setView(inputFecha)
-            .setPositiveButton("Continuar") { _, _ ->
-
-                val fechaNacimiento =
-                    inputFecha.text.toString().trim()
-
-                if (fechaNacimiento.isEmpty()) {
-
-                    establecerCargando(false)
-
-                    mostrarError(
-                        "Debes ingresar tu fecha de nacimiento"
-                    )
-
-                    return@setPositiveButton
-                }
-
-                guardarUsuarioOAuth(
-                    nombre = nombre,
-                    apellido = apellido,
-                    correo = correo,
-                    fechaNacimiento = fechaNacimiento,
-                    fotoPerfil = usuarioFirebase.photoUrl?.toString()
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Fecha de nacimiento")
+                .setTheme(
+                    com.google.android.material.R.style.ThemeOverlay_Material3_MaterialCalendar
                 )
-            }
-            .setNegativeButton("Cancelar") { _, _ ->
+                .setCalendarConstraints(constraints)
+                .build()
 
-                auth.signOut()
-                establecerCargando(false)
+        datePicker.addOnPositiveButtonClickListener { fechaMillis ->
 
+            val fechaNacimiento =
+                convertirMillisAFecha(fechaMillis)
+
+            if (!validarFechaNacimiento(fechaNacimiento)) {
+                return@addOnPositiveButtonClickListener
             }
-            .setCancelable(false)
-            .show()
+
+            guardarUsuarioOAuth(
+                nombre = nombre,
+                apellido = apellido,
+                correo = correo,
+                fechaNacimiento = fechaNacimiento,
+                fotoPerfil = fotoPerfil
+            )
+        }
+
+        datePicker.addOnCancelListener {
+            establecerCargando(false)
+        }
+
+        datePicker.addOnDismissListener {
+            // No hacemos nada aquí porque el resultado ya se procesa
+            // en addOnPositiveButtonClickListener.
+        }
+
+        datePicker.show(
+            supportFragmentManager,
+            "DATE_PICKER"
+        )
     }
 
+    private fun convertirMillisAFecha(
+        fechaMillis: Long
+    ): String {
+
+        val formato =
+            SimpleDateFormat(
+                "dd/MM/yyyy",
+                Locale.getDefault()
+            )
+
+        formato.timeZone = TimeZone.getTimeZone("UTC")
+
+        return formato.format(Date(fechaMillis))
+    }
+
+    // Validacion de fechas para registro
+    private fun validarFechaNacimiento(
+        fechaNacimiento: String
+    ): Boolean {
+
+        return try {
+
+            val formato =
+                SimpleDateFormat(
+                    "dd/MM/yyyy",
+                    Locale.getDefault()
+                )
+
+            formato.isLenient = false
+
+            val fecha =
+                formato.parse(fechaNacimiento)
+
+            if (fecha == null) {
+                mostrarError(
+                    "La fecha de nacimiento no es válida"
+                )
+                return false
+            }
+
+            val hoy = Date()
+
+            if (fecha.after(hoy)) {
+                mostrarError(
+                    "La fecha de nacimiento no puede ser futura"
+                )
+                return false
+            }
+
+            true
+
+        } catch (e: Exception) {
+
+            Log.e(
+                TAG,
+                "Error validando fecha de nacimiento",
+                e
+            )
+
+            mostrarError(
+                "La fecha de nacimiento no es válida"
+            )
+
+            false
+        }
+    }
     private fun guardarUsuarioOAuth(
         nombre: String,
         apellido: String,
