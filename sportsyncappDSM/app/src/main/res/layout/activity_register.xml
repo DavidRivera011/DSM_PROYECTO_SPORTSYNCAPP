@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_beige"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:overScrollMode="ifContentScrolls"
+    tools:context=".RegisterActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
+
+        <!-- ========================================================= -->
+        <!-- LOGO                                                      -->
+        <!-- ========================================================= -->
+
+        <FrameLayout
+            android:id="@+id/logoContainer"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="40dp"
+            android:elevation="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/logo_sportsyncapp" />
+
+        </FrameLayout>
+
+        <!-- ========================================================= -->
+        <!-- TARJETA DE REGISTRO                                       -->
+        <!-- ========================================================= -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardCafeRegistro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="135dp"
+            android:background="@drawable/bg_tarjeta_cafe"
+            android:elevation="20dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="36dp"
+            android:paddingBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- ===================================================== -->
+            <!-- TITULO                                                -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/crear_cuenta"
+                android:textColor="@color/texto_blanco"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!-- ===================================================== -->
+            <!-- NOMBRE                                                -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Nombre"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:autofillHints="name"
+                android:background="@drawable/bg_input_blanco"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/nombre"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="@color/texto_negro"
+                android:textColorHint="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelNombre" />
+
+
+            <!-- ===================================================== -->
+            <!-- APELLIDO                                              -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelApellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Apellido"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etNombre" />
+
+            <EditText
+                android:id="@+id/etApellido"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:autofillHints="name"
+                android:background="@drawable/bg_input_blanco"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/apellido"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="@color/texto_negro"
+                android:textColorHint="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelApellido" />
+
+
+            <!-- ===================================================== -->
+            <!-- CORREO                                                -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelCorreo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Correo electrónico"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etApellido" />
+
+            <EditText
+                android:id="@+id/etCorreo"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:autofillHints="emailAddress"
+                android:background="@drawable/bg_input_blanco"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/correo_electr_nico"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="@color/texto_negro"
+                android:textColorHint="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelCorreo" />
+
+
+            <!-- ===================================================== -->
+            <!-- CONTRASEÑA                                            -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelContrasena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Contraseña"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+
+            <EditText
+                android:id="@+id/etContrasena"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:autofillHints="password"
+                android:background="@drawable/bg_input_blanco"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/contrase_a_m_nimo_6_caracteres"
+                android:inputType="textPassword"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="@color/texto_negro"
+                android:textColorHint="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelContrasena" />
+
+
+            <!-- ===================================================== -->
+            <!-- REPETIR CONTRASEÑA                                    -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelContrasenaRepeticion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Confirmar contraseña"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etContrasena" />
+
+            <EditText
+                android:id="@+id/etContrasenaRepeticion"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:autofillHints="password"
+                android:background="@drawable/bg_input_blanco"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif"
+                android:hint="@string/digite_de_nuevo_la_contrase_a"
+                android:inputType="textPassword"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="@color/texto_negro"
+                android:textColorHint="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelContrasenaRepeticion" />
+
+
+            <!-- ===================================================== -->
+            <!-- FECHA DE NACIMIENTO                                   -->
+            <!-- ===================================================== -->
+
+            <TextView
+                android:id="@+id/tvLabelFechaNacimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/fecha_de_nacimiento"
+                android:textColor="@color/texto_blanco"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etContrasenaRepeticion" />
+
+            <LinearLayout
+                android:id="@+id/layoutFechaNacimiento"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelFechaNacimiento">
+
+                <Spinner
+                    android:id="@+id/spDia"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input_blanco"
+                    android:elevation="3dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:popupBackground="@color/texto_negro"
+                    android:spinnerMode="dropdown" />
+
+                <Spinner
+                    android:id="@+id/spMes"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1.6"
+                    android:background="@drawable/bg_input_blanco"
+                    android:elevation="3dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:popupBackground="@color/texto_negro"
+                    android:spinnerMode="dropdown" />
+
+                <Spinner
+                    android:id="@+id/spAnio"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1.3"
+                    android:background="@drawable/bg_input_blanco"
+                    android:elevation="3dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:popupBackground="@color/texto_negro"
+                    android:spinnerMode="dropdown" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- ========================================================= -->
+        <!-- MENSAJE DE ERROR                                          -->
+        <!-- ========================================================= -->
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:minHeight="16dp"
+            android:textColor="#D32F2F"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardCafeRegistro" />
+
+        <!-- ========================================================= -->
+        <!-- BOTON REGISTRAR                                           -->
+        <!-- ========================================================= -->
+
+        <LinearLayout
+            android:id="@+id/layoutBotonesRegistro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvError">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCancelar"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_boton_gris"
+                android:elevation="8dp"
+                android:fontFamily="sans-serif-black"
+                android:outlineProvider="background"
+                android:stateListAnimator="@null"
+                android:text="@string/cancelar"
+                android:textAllCaps="false"
+                android:textColor="@color/texto_blanco"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegistrar"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_boton_naranja"
+                android:elevation="8dp"
+                android:fontFamily="sans-serif-black"
+                android:outlineProvider="background"
+                android:stateListAnimator="@null"
+                android:text="@string/registrarme"
+                android:textAllCaps="false"
+                android:textColor="@color/texto_blanco"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

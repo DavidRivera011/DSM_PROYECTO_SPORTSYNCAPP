@@ -1,0 +1,28 @@
+# Crea el registro en la tabla Usuarios para el usuario que acaba de
+# registrarse en Firebase Authentication.
+#
+# id_expr: "auth.uid" hace que Data Connect use automaticamente el uid
+# del usuario autenticado como llave primaria (coincide con el
+# @default(expr: "auth.uid") del schema).
+#
+# rolId espera el UUID de la fila en Roles (el que ya insertaste a mano
+# para "Usuario").
+
+mutation CreateUsuario(
+  $nombre: String!
+  $apellido: String!
+  $correo: String!
+  $fechaNacimiento: Date!
+  $rolId: UUID!
+  $fotoPerfil: String
+) @auth(level: USER) {
+  usuarios_insert(data: {
+    id_expr: "auth.uid"
+    nombre: $nombre
+    apellido: $apellido
+    correo: $correo
+    fechaNacimiento: $fechaNacimiento
+    rolId: $rolId
+    fotoPerfil: $fotoPerfil
+  })
+}
