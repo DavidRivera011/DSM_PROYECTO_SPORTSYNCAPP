@@ -1,308 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo_beige"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true"
-    android:overScrollMode="ifContentScrolls"
-    tools:context=".LoginActivity">
+    android:background="@color/sportsync_bg"
+    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="32dp">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <!-- LOGO PLACEHOLDER PREMIUM -->
-    <FrameLayout
-        android:id="@+id/logoContainer"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="40dp"
-        android:elevation="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        <!-- Logo SportSync -->
         <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logo_sportsyncapp" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo"
+            android:src="@drawable/ic_sport_ball"
+            app:tint="@color/sportsync_primary_orange" />
 
-    </FrameLayout>
-
-    <!-- TARJETA CAFÉ PREMIUM -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardCafe"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="145dp"
-        android:background="@drawable/bg_tarjeta_cafe"
-        android:elevation="24dp"
-        android:paddingHorizontal="28dp"
-        android:paddingTop="36dp"
-        android:paddingBottom="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/tvTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Inicio de sesión"
-            android:textColor="@color/texto_blanco"
-            android:textSize="26sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvLabelCorreo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Correo electrónico"
-            android:textColor="@color/texto_blanco"
-            android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
-
-        <EditText
-            android:id="@+id/etCorreo"
+        <!-- Card de Login -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_input_blanco"
-            android:elevation="4dp"
-            android:fontFamily="sans-serif"
-            android:hint="ejemplo@correo.com"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="20dp"
-            android:singleLine="true"
-            android:textColor="@color/texto_negro"
-            android:textColorHint="#9E9E9E"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelCorreo" />
-
-        <TextView
-            android:id="@+id/tvLabelContrasena"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Contraseña"
-            android:textColor="@color/texto_blanco"
-            android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etCorreo" />
+            app:cardBackgroundColor="@color/sportsync_card_dark"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp">
 
-        <EditText
-            android:id="@+id/etContrasena"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_input_blanco"
-            android:elevation="4dp"
-            android:fontFamily="sans-serif"
-            android:hint="••••••••"
-            android:inputType="textPassword"
-            android:paddingHorizontal="20dp"
-            android:singleLine="true"
-            android:textColor="@color/texto_negro"
-            android:textColorHint="#9E9E9E"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelContrasena" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-        <!-- RECORDARME -->
-        <CheckBox
-            android:id="@+id/cbRecordar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:buttonTint="@color/texto_blanco"
-            android:fontFamily="sans-serif-medium"
-            android:text="Recordarme"
-            android:textColor="@color/texto_blanco"
-            android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etContrasena" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:text="Inicio de sesión"
+                    android:textColor="@color/sportsync_text_light"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- Correo -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Correo electrónico"
+                    android:textColor="@color/sportsync_peach"
+                    android:textSize="13sp" />
 
-    <!-- MENSAJE DE ERROR -->
-    <TextView
-        android:id="@+id/tvError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:minHeight="20dp"
-        android:textColor="#D32F2F"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/cardCafe" />
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="ejemplo@correo.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/sportsync_text_dark"
+                    android:textColorHint="@color/sportsync_text_muted"
+                    android:textSize="14sp" />
 
-    <!-- CONTENEDOR DE BOTONES -->
-    <LinearLayout
-        android:id="@+id/layoutBotones"
-        android:baselineAligned="false"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp"
-        android:layout_marginTop="8dp"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvError">
+                <!-- Contraseña -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Contraseña"
+                    android:textColor="@color/sportsync_peach"
+                    android:textSize="13sp" />
 
-        <!-- BOTÓN CONFIRMAR -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnIniciarSesion"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_boton_naranja"
-            android:outlineProvider="background"
-            android:elevation="8dp"
-            android:fontFamily="sans-serif-black"
-            android:stateListAnimator="@null"
-            android:text="@string/confirmar"
-            android:textAllCaps="false"
-            android:textColor="@color/texto_blanco"
-            android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/sportsync_text_dark"
+                    android:textColorHint="@color/sportsync_text_muted"
+                    android:textSize="14sp" />
 
-        <!-- BOTÓN OLVIDÉ MI CONTRASEÑA -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnOlvideContrasena"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_boton_naranja"
-            android:backgroundTint="@color/boton_naranja_claro"
-            android:outlineProvider="background"
-            android:elevation="8dp"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:lineSpacingExtra="-2dp"
-            android:paddingHorizontal="4dp"
-            android:stateListAnimator="@null"
-            android:text="@string/olvid_mi_ncontrase_a"
-            android:textAllCaps="false"
-            android:textColor="@color/texto_blanco"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeTextType="uniform" />
-    </LinearLayout>
+                <!-- Recordarme y Olvidé contraseña -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-    <!-- ENLACE A REGISTRO -->
-    <TextView
-        android:id="@+id/tvIrARegistro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:fontFamily="sans-serif-black"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:text="@string/no_tienes_cuenta_crea_una_aqu"
-        android:textColor="@color/boton_naranja"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutBotones" />
+                    <CheckBox
+                        android:id="@+id/cbRememberMe"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/sportsync_peach"
+                        android:text="Recordarme"
+                        android:textColor="@color/sportsync_peach"
+                        android:textSize="13sp" />
 
-    <!-- SEPARADOR "O CONTINUA CON" -->
-    <LinearLayout
-        android:id="@+id/layoutSeparador"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvIrARegistro">
+                    <TextView
+                        android:id="@+id/tvForgotPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Olvidé mi contraseña?"
+                        android:textColor="@color/sportsync_peach"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="#D0C4B0" />
+                <!-- Botón Confirmar Login -->
+                <Button
+                    android:id="@+id/btnConfirmLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_button_orange"
+                    android:text="Confirmar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/o_contin_a_con"
-            android:textColor="#8A7A66"
-            android:textSize="12sp" />
+                <!-- Enlace a Registro -->
+                <TextView
+                    android:id="@+id/tvGoToRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:text="¿No tienes cuenta? Crea una aquí"
+                    android:textColor="@color/sportsync_peach"
+                    android:textSize="13sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="#D0C4B0" />
+                <!-- Divisor -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="16dp"
+                    android:text="o continúa con"
+                    android:textColor="@color/sportsync_text_muted"
+                    android:textSize="12sp" />
+
+                <!-- Botón Google -->
+                <Button
+                    android:id="@+id/btnGoogle"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_input_field"
+                    android:text="Continuar con Google"
+                    android:textAllCaps="false"
+                    android:textColor="@color/sportsync_text_dark"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <!-- Botón GitHub -->
+                <Button
+                    android:id="@+id/btnGithub"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_button_gray"
+                    android:text="Continuar con GitHub"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <!-- Botón Acceso Rápido / Administrador para evaluación -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnQuickFan"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Entrar (FAN)"
+                        android:textColor="@color/sportsync_peach"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/btnQuickAdmin"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Entrar (ADMIN)"
+                        android:textColor="@color/sportsync_primary_orange"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
-    <!-- BOTONES SOCIALES -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnGoogle"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/texto_blanco"
-        android:elevation="4dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/continuar_con_google"
-        android:textAllCaps="false"
-        android:textColor="@color/texto_negro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutSeparador" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnGitHub"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#24292F"
-        android:elevation="4dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/continuar_con_github"
-        android:textAllCaps="false"
-        android:textColor="@color/texto_blanco"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>

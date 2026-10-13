@@ -1,5 +1,0 @@
-connectorId: default
-generate:
-  kotlinSdk:
-    outputDir: "../../app/src/main/kotlin/com/example/sportsyncapp/connector"
-    package: "com.example.sportsyncapp.connector"

@@ -1,13 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SportSyncAPP" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/tarjeta_cafe</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <!-- Forzar color sólido sin transparencias -->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <style name="Base.Theme.Desafio02_Logins" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/sportsync_primary_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/sportsync_peach</item>
+        <item name="colorOnSecondary">@color/sportsync_text_dark</item>
+        <item name="android:windowBackground">@color/sportsync_bg</item>
+        <item name="android:statusBarColor">@color/sportsync_card_dark</item>
+        <item name="android:navigationBarColor">@color/sportsync_nav_bg</item>
     </style>
 
-    <style name="Theme.SportSyncAPP" parent="Base.Theme.SportSyncAPP" />
-
-
+    <style name="Theme.Desafio02_Logins" parent="Base.Theme.Desafio02_Logins" />
 </resources>

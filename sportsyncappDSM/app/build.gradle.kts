@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-
     id("com.google.gms.google-services")
-    kotlin("plugin.serialization") version "2.2.10"
 }
 
 android {
@@ -48,15 +46,26 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
 
-    // Firebase AUTH Y DATACONNECT / GOOGLESERVICES
-    implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
+    // Firebase Auth & Realtime Database
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-dataconnect:16.0.0-beta04")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    // Credential Manager (Google Sign-In)
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    // Retrofit & OkHttp
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // SwipeRefreshLayout & Coroutines
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
