@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.main
+package com.example.sportsyncapp.ui.main
 
 import android.os.Bundle
 import android.widget.Toast
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             prefs.userRole = newRole
             updateRoleButtonText()
 
-            val roleName = if (newRole == 2) "ADMINISTRADOR (Escritura / ModificaciÃ³n)" else "FAN (Solo Lectura)"
+            val roleName = if (newRole == 2) "ADMINISTRADOR (Escritura / Modificación)" else "FAN (Solo Lectura)"
             Toast.makeText(this, "Cambiado a: $roleName", Toast.LENGTH_SHORT).show()
 
             // Recargar el fragmento activo para reflejar permisos de Admin
@@ -90,4 +90,3 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 }
-

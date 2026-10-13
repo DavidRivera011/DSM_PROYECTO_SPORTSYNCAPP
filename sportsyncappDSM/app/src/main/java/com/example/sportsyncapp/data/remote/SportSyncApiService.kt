@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.remote
+package com.example.sportsyncapp.data.remote
 
 import com.example.sportsyncapp.data.model.*
 import retrofit2.Response
@@ -72,4 +72,3 @@ interface SportSyncApiService {
     @GET("api/ranking")
     suspend fun getRanking(): Response<List<RankingItem>>
 }
-

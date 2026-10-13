@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.matches
+package com.example.sportsyncapp.ui.matches
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -95,17 +95,17 @@ class MatchesFragment : Fragment() {
 
     private fun showMatchDetailDialog(match: Match) {
         val status = when (match.idEstado) {
-            1 -> "ðŸ“… Programado"
-            2 -> "ðŸŸ¢ En Curso"
-            3 -> "âœ… Finalizado"
+            1 -> "📅 Programado"
+            2 -> "🟢 En Curso"
+            3 -> "✅ Finalizado"
             else -> match.estadoNombre
         }
         val msg = buildString {
-            appendLine("ðŸ† ${match.eventoNombre ?: "Torneo"} ")
-            appendLine("ðŸ“… Fecha: ${match.fecha} Â· ${match.hora}")
-            appendLine("ðŸ“Œ Estado: $status")
+            appendLine("🏆 ${match.eventoNombre ?: "Torneo"} ")
+            appendLine("📅 Fecha: ${match.fecha} · ${match.hora}")
+            appendLine("📌 Estado: $status")
             appendLine()
-            appendLine("${match.equipoLocalNombre}  ${match.marcadorLocal} â€” ${match.marcadorVisitante}  ${match.equipoVisitanteNombre}")
+            appendLine("${match.equipoLocalNombre}  ${match.marcadorLocal} — ${match.marcadorVisitante}  ${match.equipoVisitanteNombre}")
         }
         AlertDialog.Builder(requireContext())
             .setTitle("Detalle del Partido")
@@ -151,7 +151,7 @@ class MatchesFragment : Fragment() {
         layout.addView(etVisitante)
 
         AlertDialog.Builder(ctx)
-            .setTitle("âš½ Actualizar Marcador")
+            .setTitle("⚽ Actualizar Marcador")
             .setView(layout)
             .setPositiveButton("Guardar") { _, _ ->
                 val local = etLocal.text.toString().toIntOrNull() ?: 0
@@ -175,4 +175,3 @@ class MatchesFragment : Fragment() {
         _binding = null
     }
 }
-

@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.repository
+package com.example.sportsyncapp.data.repository
 
 import android.content.Context
 import com.example.sportsyncapp.data.local.PreferencesManager
@@ -11,10 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * SportSyncRepository â€” Single source of truth.
+ * SportSyncRepository — Single source of truth.
  *
- * Read priority:  REST API â†’ Firebase RTDB â†’ SQLite (offline-first fallback)
- * Write priority: SQLite immediately (instant UI) â†’ RTDB async (cloud backup) â†’ REST API try
+ * Read priority:  REST API → Firebase RTDB → SQLite (offline-first fallback)
+ * Write priority: SQLite immediately (instant UI) → RTDB async (cloud backup) → REST API try
  */
 class SportSyncRepository(private val context: Context) {
 
@@ -92,7 +92,7 @@ class SportSyncRepository(private val context: Context) {
     }
 
     // ====================================================================
-    // Eventos â€” SQLite + RTDB + REST
+    // Eventos — SQLite + RTDB + REST
     // ====================================================================
 
     suspend fun getEvents(): Result<List<SportEvent>> = withContext(Dispatchers.IO) {
@@ -127,7 +127,7 @@ class SportSyncRepository(private val context: Context) {
     }
 
     // ====================================================================
-    // Partidos â€” SQLite + RTDB + REST
+    // Partidos — SQLite + RTDB + REST
     // ====================================================================
 
     suspend fun getMatches(): Result<List<Match>> = withContext(Dispatchers.IO) {
@@ -171,7 +171,7 @@ class SportSyncRepository(private val context: Context) {
     }
 
     // ====================================================================
-    // Inscripciones â€” SQLite + RTDB + REST
+    // Inscripciones — SQLite + RTDB + REST
     // ====================================================================
 
     suspend fun getInscriptions(): Result<List<Inscription>> = withContext(Dispatchers.IO) {
@@ -215,7 +215,7 @@ class SportSyncRepository(private val context: Context) {
         } catch (_: Exception) {}
         val updated = dbHelper.getAllInscriptions().find { it.idInscripcion == id }
         if (updated != null) Result.success(updated)
-        else Result.failure(Exception("InscripciÃ³n no encontrada"))
+        else Result.failure(Exception("Inscripción no encontrada"))
     }
 
     suspend fun cancelInscription(id: Int): Result<Boolean> = withContext(Dispatchers.IO) {
@@ -259,4 +259,3 @@ class SportSyncRepository(private val context: Context) {
         FirebaseSyncManager.pushUser(fbUser.uid, user)
     }
 }
-

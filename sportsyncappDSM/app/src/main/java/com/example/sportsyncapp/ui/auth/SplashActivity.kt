@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.auth
+package com.example.sportsyncapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            // Si hay sesiÃ³n activa en Firebase Auth o preferencias locales
+            // Si hay sesión activa en Firebase Auth o preferencias locales
             if (auth.currentUser != null || prefs.isLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
@@ -32,4 +32,3 @@ class SplashActivity : AppCompatActivity() {
         }, 1500)
     }
 }
-

@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.agenda
+package com.example.sportsyncapp.ui.agenda
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -127,17 +127,17 @@ class AgendaFragment : Fragment() {
     private fun showEventDetailDialog(event: SportEvent) {
         val isAdmin = repository.preferences.isAdmin()
         val status = when (event.idEstado) {
-            1 -> "â³ Pendiente"
-            2 -> "ðŸŸ¢ En Curso"
-            3 -> "âœ… Finalizado"
+            1 -> "⏳ Pendiente"
+            2 -> "🟢 En Curso"
+            3 -> "✅ Finalizado"
             else -> event.estadoNombre
         }
 
         val message = buildString {
-            appendLine("ðŸ“… Fecha: ${event.fecha}")
-            appendLine("âš½ Deporte: ${event.deporteNombre}")
-            appendLine("ðŸ¢ Sede: ${event.institucionNombre}")
-            appendLine("ðŸ“Œ Estado: $status")
+            appendLine("📅 Fecha: ${event.fecha}")
+            appendLine("⚽ Deporte: ${event.deporteNombre}")
+            appendLine("🏢 Sede: ${event.institucionNombre}")
+            appendLine("📌 Estado: $status")
             if (!event.descripcion.isNullOrEmpty()) {
                 appendLine()
                 appendLine(event.descripcion)
@@ -152,8 +152,8 @@ class AgendaFragment : Fragment() {
         if (isAdmin) {
             builder.setNeutralButton("Eliminar") { _, _ ->
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Confirmar eliminaciÃ³n")
-                    .setMessage("Â¿Eliminar '${event.nombre}'? Esta acciÃ³n no se puede deshacer.")
+                    .setTitle("Confirmar eliminación")
+                    .setMessage("¿Eliminar '${event.nombre}'? Esta acción no se puede deshacer.")
                     .setPositiveButton("Eliminar") { _, _ ->
                         viewLifecycleOwner.lifecycleScope.launch {
                             repository.deleteEvent(event.idEvento)
@@ -176,9 +176,9 @@ class AgendaFragment : Fragment() {
         }
 
         val etName = EditText(context).apply { hint = "Nombre del evento (ej. Copa Salesiana)" }
-        val etSport = EditText(context).apply { hint = "Deporte (FÃºtbol, Basketballâ€¦)" }
-        val etInstitution = EditText(context).apply { hint = "Sede / InstituciÃ³n" }
-        val etDesc = EditText(context).apply { hint = "DescripciÃ³n (opcional)"; minLines = 2 }
+        val etSport = EditText(context).apply { hint = "Deporte (Fútbol, Basketball…)" }
+        val etInstitution = EditText(context).apply { hint = "Sede / Institución" }
+        val etDesc = EditText(context).apply { hint = "Descripción (opcional)"; minLines = 2 }
 
         // Date picker field
         val etDate = EditText(context).apply {
@@ -200,7 +200,7 @@ class AgendaFragment : Fragment() {
         layout.addView(etDesc)
 
         AlertDialog.Builder(context)
-            .setTitle("âž• Nuevo Evento Deportivo")
+            .setTitle("➕ Nuevo Evento Deportivo")
             .setView(layout)
             .setPositiveButton("Crear") { _, _ ->
                 val name = etName.text.toString().trim()
@@ -217,7 +217,7 @@ class AgendaFragment : Fragment() {
                 val newEvent = SportEvent(
                     idEvento = (allEvents.maxOfOrNull { it.idEvento } ?: 0) + 1,
                     nombre = name,
-                    deporteNombre = sport.ifEmpty { "FÃºtbol" },
+                    deporteNombre = sport.ifEmpty { "Fútbol" },
                     institucionNombre = institution.ifEmpty { "UES" },
                     fecha = date.ifEmpty { "Por definir" },
                     idEstado = 1,
@@ -228,7 +228,7 @@ class AgendaFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val result = repository.createEvent(newEvent)
                     result.onSuccess {
-                        Toast.makeText(context, "âœ… Evento '${it.nombre}' registrado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "✅ Evento '${it.nombre}' registrado", Toast.LENGTH_SHORT).show()
                     }.onFailure {
                         Toast.makeText(context, "Error al crear evento", Toast.LENGTH_SHORT).show()
                     }
@@ -244,4 +244,3 @@ class AgendaFragment : Fragment() {
         _binding = null
     }
 }
-

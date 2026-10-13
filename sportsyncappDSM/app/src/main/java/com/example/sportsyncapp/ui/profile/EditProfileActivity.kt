@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.profile
+package com.example.sportsyncapp.ui.profile
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -98,7 +98,7 @@ class EditProfileActivity : AppCompatActivity() {
                 if (newPass.isNotEmpty() && newPass.length >= 6) {
                     fbUser.updatePassword(newPass)
                         .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error al cambiar contraseÃ±a: ${e.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Error al cambiar contraseña: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                 }
 
@@ -114,7 +114,7 @@ class EditProfileActivity : AppCompatActivity() {
 
             // Show confirmation dialog (as in Figma)
             AlertDialog.Builder(this)
-                .setTitle("Â¡Ã‰xito!")
+                .setTitle("¡Éxito!")
                 .setMessage("Perfil actualizado correctamente.")
                 .setPositiveButton("Aceptar") { _, _ ->
                     finish()
@@ -124,4 +124,3 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 }
-

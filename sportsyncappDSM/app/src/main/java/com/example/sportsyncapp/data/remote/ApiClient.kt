@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.remote
+package com.example.sportsyncapp.data.remote
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     // 10.0.2.2 es localhost desde el emulador de Android.
-    // Si ejecutas en un celular fÃ­sico, puedes usar la IP de tu PC (ej. 192.168.1.X:3000)
+    // Si ejecutas en un celular físico, puedes usar la IP de tu PC (ej. 192.168.1.X:3000)
     var baseUrl: String = "http://10.0.2.2:3000/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -34,4 +34,3 @@ object ApiClient {
             .create(SportSyncApiService::class.java)
     }
 }
-

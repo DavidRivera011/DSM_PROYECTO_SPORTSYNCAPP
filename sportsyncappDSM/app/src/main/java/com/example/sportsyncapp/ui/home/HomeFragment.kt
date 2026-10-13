@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.home
+package com.example.sportsyncapp.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -46,8 +46,8 @@ class HomeFragment : Fragment() {
     private fun setupUserGreeting() {
         val user = repository.preferences.currentUser
         val firstName = user?.nombre?.takeIf { it.isNotEmpty() } ?: "Deportista"
-        val role = if (repository.preferences.isAdmin()) "Administrador âš™ï¸" else "FAN ðŸ…"
-        binding.tvWelcomeUser.text = "Â¡Hola, $firstName!"
+        val role = if (repository.preferences.isAdmin()) "Administrador ⚙️" else "FAN 🏅"
+        binding.tvWelcomeUser.text = "¡Hola, $firstName!"
         binding.tvUserSubtitle.text = "Modo: $role"
     }
 
@@ -98,7 +98,7 @@ class HomeFragment : Fragment() {
                 // Featured match (prefer "En curso", fallback to first)
                 val featured = matches.firstOrNull { it.idEstado == 2 } ?: matches.firstOrNull()
                 if (featured != null) {
-                    binding.tvFeaturedMatchTourney.text = "${featured.eventoNombre ?: "Torneo"} Â· ${featured.estadoNombre}"
+                    binding.tvFeaturedMatchTourney.text = "${featured.eventoNombre ?: "Torneo"} · ${featured.estadoNombre}"
                     binding.tvFeaturedLocal.text = featured.equipoLocalNombre
                     binding.tvFeaturedVisitor.text = featured.equipoVisitanteNombre
                     binding.tvFeaturedScore.text = "${featured.marcadorLocal} - ${featured.marcadorVisitante}"
@@ -119,4 +119,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-

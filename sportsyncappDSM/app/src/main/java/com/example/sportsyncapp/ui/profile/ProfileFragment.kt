@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.profile
+package com.example.sportsyncapp.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
@@ -62,11 +62,11 @@ class ProfileFragment : Fragment() {
 
         // Firebase Auth status
         if (firebaseUser != null) {
-            val verified = if (firebaseUser.isEmailVerified) "âœ… Verificado" else "âš ï¸ Sin verificar"
+            val verified = if (firebaseUser.isEmailVerified) "✅ Verificado" else "⚠️ Sin verificar"
             val provider = firebaseUser.providerData.firstOrNull { it.providerId != "firebase" }?.providerId ?: "email"
-            binding.tvFirebaseStatus.text = "$verified Â· Proveedor: $provider"
+            binding.tvFirebaseStatus.text = "$verified · Proveedor: $provider"
         } else {
-            binding.tvFirebaseStatus.text = "ðŸ”’ SesiÃ³n local (modo demo)"
+            binding.tvFirebaseStatus.text = "🔒 Sesión local (modo demo)"
         }
     }
 
@@ -76,7 +76,7 @@ class ProfileFragment : Fragment() {
             val inscResult = repository.getInscriptions()
 
             profileResult.onSuccess { profile ->
-                binding.tvAthleteTeam.text = "${profile.equipoNombre} Â· ${profile.deporteNombre} Â· ${profile.tipoPerfilNombre}"
+                binding.tvAthleteTeam.text = "${profile.equipoNombre} · ${profile.deporteNombre} · ${profile.tipoPerfilNombre}"
                 binding.tvAthletePoints.text = profile.puntosTotales.toString()
                 binding.tvAthleteMatches.text = profile.partidosJugados.toString()
             }
@@ -124,4 +124,3 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 }
-

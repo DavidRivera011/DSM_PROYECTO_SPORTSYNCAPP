@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.remote
+package com.example.sportsyncapp.data.remote
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -9,7 +9,7 @@ import okio.Buffer
 import java.io.IOException
 
 /**
- * MockInterceptor â€” tries the real HTTP call first.
+ * MockInterceptor — tries the real HTTP call first.
  * If the server is unreachable (IOException), falls back to an in-memory mock
  * that reads the REAL request body so created/updated data reflects what the user typed.
  */
@@ -30,14 +30,14 @@ class MockInterceptor : Interceptor {
             // fall through to mock so the demo always works.
             realResponse.close()
         } catch (_: IOException) {
-            // Server not running or no network â†’ use mock
+            // Server not running or no network → use mock
         }
 
         val url = request.url.toString()
         val method = request.method
         val path = request.url.encodedPath
 
-        // Read request body as JSON (safe â€” body may be null for GET/DELETE)
+        // Read request body as JSON (safe — body may be null for GET/DELETE)
         val bodyJson: JsonObject? = runCatching {
             request.body?.let { body ->
                 val buffer = Buffer()
@@ -67,7 +67,7 @@ class MockInterceptor : Interceptor {
 
         return when {
 
-            // â”€â”€ Deportes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Deportes ──────────────────────────────────────────────────
             path.endsWith("/api/deportes") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.sports)
             }
@@ -91,17 +91,17 @@ class MockInterceptor : Interceptor {
                 200 to "{\"success\":true,\"message\":\"Deporte eliminado\"}"
             }
 
-            // â”€â”€ Instituciones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Instituciones ─────────────────────────────────────────────
             path.endsWith("/api/instituciones") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.institutions)
             }
 
-            // â”€â”€ Equipos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Equipos ───────────────────────────────────────────────────
             path.endsWith("/api/equipos") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.teams)
             }
 
-            // â”€â”€ Eventos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Eventos ───────────────────────────────────────────────────
             path.endsWith("/api/eventos") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.events)
             }
@@ -109,7 +109,7 @@ class MockInterceptor : Interceptor {
                 val nombre = body?.get("nombre")?.asString ?: "Evento Sin Nombre"
                 val fecha = body?.get("fecha")?.asString ?: ""
                 val instNombre = body?.get("institucion_nombre")?.asString ?: "UES"
-                val depNombre = body?.get("deporte_nombre")?.asString ?: "FÃºtbol"
+                val depNombre = body?.get("deporte_nombre")?.asString ?: "Fútbol"
                 val desc = body?.get("descripcion")?.asString
                 val newId = (MockDataStore.events.maxOfOrNull { it.idEvento } ?: 0) + 1
                 val newEvent = com.example.sportsyncapp.data.model.SportEvent(
@@ -126,7 +126,7 @@ class MockInterceptor : Interceptor {
                 200 to gson.toJson(newEvent)
             }
 
-            // â”€â”€ Partidos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Partidos ──────────────────────────────────────────────────
             path.endsWith("/api/partidos") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.matches)
             }
@@ -144,13 +144,13 @@ class MockInterceptor : Interceptor {
                 }
             }
 
-            // â”€â”€ Participantes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Participantes ─────────────────────────────────────────────
             path.contains("/api/partidos/") && path.contains("/participantes") && method == "GET" -> {
                 val id = path.substringAfter("/api/partidos/").substringBefore("/").toIntOrNull() ?: 0
                 200 to gson.toJson(MockDataStore.participants.filter { it.idPartido == id })
             }
 
-            // â”€â”€ Inscripciones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Inscripciones ─────────────────────────────────────────────
             path.endsWith("/api/inscripciones") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.inscriptions)
             }
@@ -194,15 +194,15 @@ class MockInterceptor : Interceptor {
             path.contains("/api/inscripciones/") && method == "DELETE" -> {
                 val id = path.substringAfterLast("/").toIntOrNull() ?: 0
                 MockDataStore.inscriptions.removeAll { it.idInscripcion == id }
-                200 to "{\"success\":true,\"message\":\"InscripciÃ³n cancelada\"}"
+                200 to "{\"success\":true,\"message\":\"Inscripción cancelada\"}"
             }
 
-            // â”€â”€ Perfiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Perfiles ──────────────────────────────────────────────────
             path.contains("/api/perfiles/") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.athleteProfile)
             }
 
-            // â”€â”€ Ranking â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── Ranking ───────────────────────────────────────────────────
             path.endsWith("/api/ranking") && method == "GET" -> {
                 200 to gson.toJson(MockDataStore.rankings)
             }
@@ -213,4 +213,3 @@ class MockInterceptor : Interceptor {
         }
     }
 }
-

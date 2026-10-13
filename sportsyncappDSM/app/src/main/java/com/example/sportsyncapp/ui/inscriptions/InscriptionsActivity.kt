@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.inscriptions
+package com.example.sportsyncapp.ui.inscriptions
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -115,8 +115,8 @@ class InscriptionsActivity : AppCompatActivity() {
     private fun cancelInscription(inscription: Inscription) {
         AlertDialog.Builder(this)
             .setTitle("Cancelar Solicitud")
-            .setMessage("Â¿Deseas cancelar tu solicitud de inscripciÃ³n a '${inscription.eventoNombre}'?")
-            .setPositiveButton("SÃ­, cancelar") { _, _ ->
+            .setMessage("¿Deseas cancelar tu solicitud de inscripción a '${inscription.eventoNombre}'?")
+            .setPositiveButton("Sí, cancelar") { _, _ ->
                 lifecycleScope.launch {
                     repository.cancelInscription(inscription.idInscripcion)
                     Toast.makeText(this@InscriptionsActivity, "Solicitud cancelada", Toast.LENGTH_SHORT).show()
@@ -160,8 +160,8 @@ class InscriptionsActivity : AppCompatActivity() {
             setText("Torneo Apertura 2024")
         }
         val etTeam = EditText(this).apply {
-            hint = "Nombre del Equipo (ej. Ãguilas FC)"
-            setText("Ãguilas FC")
+            hint = "Nombre del Equipo (ej. Águilas FC)"
+            setText("Águilas FC")
         }
 
         rgType.setOnCheckedChangeListener { _, checkedId ->
@@ -177,7 +177,7 @@ class InscriptionsActivity : AppCompatActivity() {
         layout.addView(etTeam)
 
         AlertDialog.Builder(this)
-            .setTitle("Nueva InscripciÃ³n")
+            .setTitle("Nueva Inscripción")
             .setView(layout)
             .setPositiveButton("Enviar Solicitud") { _, _ ->
                 val isTeam = rbTeam.isChecked
@@ -198,7 +198,7 @@ class InscriptionsActivity : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     repository.createInscription(newIns)
-                    Toast.makeText(this@InscriptionsActivity, "Â¡Solicitud de inscripciÃ³n enviada con Ã©xito!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@InscriptionsActivity, "¡Solicitud de inscripción enviada con éxito!", Toast.LENGTH_SHORT).show()
                     loadInscriptions()
                 }
             }
@@ -206,4 +206,3 @@ class InscriptionsActivity : AppCompatActivity() {
             .show()
     }
 }
-

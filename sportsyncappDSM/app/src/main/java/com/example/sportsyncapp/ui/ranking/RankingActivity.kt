@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.ranking
+package com.example.sportsyncapp.ui.ranking
 
 import android.os.Bundle
 import android.widget.Toast
@@ -51,4 +51,3 @@ class RankingActivity : AppCompatActivity() {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.auth
+package com.example.sportsyncapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (password.length < 6) {
-                Toast.makeText(this, "La contraseÃ±a debe tener mÃ­nimo 6 caracteres", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "La contraseña debe tener mínimo 6 caracteres", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -74,12 +74,12 @@ class LoginActivity : AppCompatActivity() {
         binding.tvForgotPassword.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             if (email.isEmpty()) {
-                Toast.makeText(this, "Ingresa tu correo para restablecer la contraseÃ±a", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingresa tu correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             auth.sendPasswordResetEmail(email)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Correo de restablecimiento enviado con Ã©xito", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Correo de restablecimiento enviado con éxito", Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
@@ -99,14 +99,14 @@ class LoginActivity : AppCompatActivity() {
             loginWithOAuth("github.com")
         }
 
-        // Accesos rÃ¡pidos para evaluaciÃ³n de roles
+        // Accesos rápidos para evaluación de roles
         binding.btnQuickFan.setOnClickListener {
             prefs.isLoggedIn = true
             prefs.userRole = 1 // FAN
             prefs.currentUser = User(
                 idUsuario = 1,
                 nombre = "Luis Fernando",
-                apellido = "GÃ³mez",
+                apellido = "Gómez",
                 correo = "usuario@gmail.com",
                 fechaNacimiento = "15/06/2002",
                 idRol = 1,
@@ -143,11 +143,11 @@ class LoginActivity : AppCompatActivity() {
                     idRol = prefs.userRole
                 )
                 SportSyncRepository(this).syncCurrentUserToFirebase()
-                Toast.makeText(this, "Â¡Bienvenido a SportSync!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "¡Bienvenido a SportSync!", Toast.LENGTH_SHORT).show()
                 goToHome()
             }
             .addOnFailureListener { error ->
-                Toast.makeText(this, "Error al iniciar sesiÃ³n: ${error.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al iniciar sesión: ${error.message}", Toast.LENGTH_LONG).show()
             }
     }
 
@@ -188,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
                                 idRol = 1
                             )
                             SportSyncRepository(this@LoginActivity).syncCurrentUserToFirebase()
-                            Toast.makeText(this@LoginActivity, "Â¡SesiÃ³n iniciada con Google!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, "¡Sesión iniciada con Google!", Toast.LENGTH_SHORT).show()
                             goToHome()
                         }
                         .addOnFailureListener { e ->
@@ -215,7 +215,7 @@ class LoginActivity : AppCompatActivity() {
                     idRol = 1
                 )
                 SportSyncRepository(this).syncCurrentUserToFirebase()
-                Toast.makeText(this, "Â¡SesiÃ³n iniciada con $providerId!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "¡Sesión iniciada con $providerId!", Toast.LENGTH_SHORT).show()
                 goToHome()
             }
             .addOnFailureListener { e ->
@@ -230,4 +230,3 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 }
-

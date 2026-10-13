@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.institutions
+package com.example.sportsyncapp.ui.institutions
 
 import android.os.Bundle
 import android.widget.TextView
@@ -84,4 +84,3 @@ class InstitutionsActivity : AppCompatActivity() {
         }
     }
 }
-

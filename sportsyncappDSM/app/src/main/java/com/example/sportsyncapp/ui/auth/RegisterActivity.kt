@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.auth
+package com.example.sportsyncapp.ui.auth
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -96,22 +96,22 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Ingresa un correo electrÃ³nico vÃ¡lido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingresa un correo electrónico válido", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password.length < 6) {
-                Toast.makeText(this, "La contraseÃ±a debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password != repeatPassword) {
-                Toast.makeText(this, "Las contraseÃ±as no coinciden", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (!binding.cbTerms.isChecked) {
-                Toast.makeText(this, "Debes aceptar los TÃ©rminos y Condiciones", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -140,7 +140,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "Â¡Cuenta creada con Ã©xito! Revisa tu correo para verificarla.",
+                    "¡Cuenta creada con éxito! Revisa tu correo para verificarla.",
                     Toast.LENGTH_LONG
                 ).show()
                 goToHome()
@@ -151,17 +151,17 @@ class RegisterActivity : AppCompatActivity() {
 
                 when (e) {
                     is FirebaseAuthUserCollisionException -> {
-                        // Email already in use â†’ show real error
-                        Toast.makeText(this, "Este correo ya estÃ¡ registrado. Inicia sesiÃ³n.", Toast.LENGTH_LONG).show()
+                        // Email already in use → show real error
+                        Toast.makeText(this, "Este correo ya está registrado. Inicia sesión.", Toast.LENGTH_LONG).show()
                     }
                     is FirebaseAuthWeakPasswordException -> {
-                        Toast.makeText(this, "La contraseÃ±a es demasiado dÃ©bil.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "La contraseña es demasiado débil.", Toast.LENGTH_LONG).show()
                     }
                     is FirebaseAuthInvalidCredentialsException -> {
-                        Toast.makeText(this, "El correo electrÃ³nico no es vÃ¡lido.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "El correo electrónico no es válido.", Toast.LENGTH_LONG).show()
                     }
                     else -> {
-                        // Network error, project not configured, etc. â†’ allow demo/offline mode
+                        // Network error, project not configured, etc. → allow demo/offline mode
                         val isNetworkError = e.message?.contains("network", ignoreCase = true) == true ||
                                 e.message?.contains("connection", ignoreCase = true) == true ||
                                 e.message?.contains("CONFIGURATION_NOT_FOUND", ignoreCase = true) == true ||
@@ -169,7 +169,7 @@ class RegisterActivity : AppCompatActivity() {
 
                         if (isNetworkError) {
                             saveUserLocally(email, idUsuario = 1)
-                            Toast.makeText(this, "Registro local completado (sin conexiÃ³n). Datos guardados.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Registro local completado (sin conexión). Datos guardados.", Toast.LENGTH_LONG).show()
                             goToHome()
                         } else {
                             Toast.makeText(this, "Error al registrar: ${e.message}", Toast.LENGTH_LONG).show()
@@ -201,4 +201,3 @@ class RegisterActivity : AppCompatActivity() {
         finish()
     }
 }
-

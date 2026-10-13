@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.local
+package com.example.sportsyncapp.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -62,4 +62,3 @@ class PreferencesManager(context: Context) {
             .apply()
     }
 }
-

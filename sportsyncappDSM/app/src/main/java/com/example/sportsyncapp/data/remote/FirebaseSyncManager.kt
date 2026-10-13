@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.remote
+package com.example.sportsyncapp.data.remote
 
 import android.util.Log
 import com.example.sportsyncapp.data.model.*
@@ -10,27 +10,27 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 /**
- * FirebaseSyncManager â€” Syncs all SportSync data to Firebase Realtime Database.
+ * FirebaseSyncManager — Syncs all SportSync data to Firebase Realtime Database.
  *
  * Firebase RTDB structure:
  * sportsync/
- *   deportes/{id}/   â†’ Sport
- *   eventos/{id}/    â†’ SportEvent
- *   inscripciones/{id}/ â†’ Inscription
- *   partidos/{id}/   â†’ Match
- *   usuarios/{uid}/  â†’ User profile
+ *   deportes/{id}/   → Sport
+ *   eventos/{id}/    → SportEvent
+ *   inscripciones/{id}/ → Inscription
+ *   partidos/{id}/   → Match
+ *   usuarios/{uid}/  → User profile
  *
  * Strategy: SQLite = local cache (always works offline)
  *            RTDB   = cloud backup (syncs when connected)
- * On write  â†’ write to SQLite immediately, then async push to RTDB
- * On read   â†’ read from SQLite first; background sync from RTDB on app start
+ * On write  → write to SQLite immediately, then async push to RTDB
+ * On read   → read from SQLite first; background sync from RTDB on app start
  */
 object FirebaseSyncManager {
 
     private val db by lazy { Firebase.database.reference.child("sportsync") }
     private const val TAG = "FirebaseSyncManager"
 
-    // â”€â”€ Helper: safe fire-and-forget push â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Helper: safe fire-and-forget push ────────────────────────────────
     @OptIn(kotlinx.coroutines.DelicateCoroutinesApi::class)
     private fun safeAsync(block: suspend () -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
@@ -39,7 +39,7 @@ object FirebaseSyncManager {
         }
     }
 
-    // â”€â”€ Deportes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Deportes ─────────────────────────────────────────────────────────
 
     fun pushSport(sport: Sport) = safeAsync {
         db.child("deportes").child(sport.idDeporte.toString()).setValue(
@@ -69,7 +69,7 @@ object FirebaseSyncManager {
         }
     }.getOrDefault(emptyList())
 
-    // â”€â”€ Eventos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Eventos ───────────────────────────────────────────────────────────
 
     fun pushEvent(event: SportEvent) = safeAsync {
         db.child("eventos").child(event.idEvento.toString()).setValue(
@@ -111,7 +111,7 @@ object FirebaseSyncManager {
         }
     }.getOrDefault(emptyList())
 
-    // â”€â”€ Inscripciones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Inscripciones ─────────────────────────────────────────────────────
 
     fun pushInscription(ins: Inscription) = safeAsync {
         db.child("inscripciones").child(ins.idInscripcion.toString()).setValue(
@@ -165,7 +165,7 @@ object FirebaseSyncManager {
         }
     }.getOrDefault(emptyList())
 
-    // â”€â”€ Partidos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Partidos ──────────────────────────────────────────────────────────
 
     fun pushMatch(match: Match) = safeAsync {
         db.child("partidos").child(match.idPartido.toString()).setValue(
@@ -215,7 +215,7 @@ object FirebaseSyncManager {
         }
     }.getOrDefault(emptyList())
 
-    // â”€â”€ Usuario/Perfil â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Usuario/Perfil ────────────────────────────────────────────────────
 
     fun pushUser(uid: String, user: com.example.sportsyncapp.data.model.User) = safeAsync {
         db.child("usuarios").child(uid).setValue(
@@ -245,4 +245,3 @@ object FirebaseSyncManager {
         )
     }.getOrNull()
 }
-

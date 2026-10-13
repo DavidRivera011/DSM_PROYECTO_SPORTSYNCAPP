@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.sports
+package com.example.sportsyncapp.ui.sports
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -92,14 +92,14 @@ class SportsFragment : Fragment() {
             setPadding(50, 40, 50, 10)
         }
 
-        val etName = EditText(context).apply { hint = "Nombre del deporte (ej. NataciÃ³n)" }
-        val etDesc = EditText(context).apply { hint = "DescripciÃ³n breve" }
+        val etName = EditText(context).apply { hint = "Nombre del deporte (ej. Natación)" }
+        val etDesc = EditText(context).apply { hint = "Descripción breve" }
 
         layout.addView(etName)
         layout.addView(etDesc)
 
         AlertDialog.Builder(context)
-            .setTitle("AÃ±adir Nueva Disciplina")
+            .setTitle("Añadir Nueva Disciplina")
             .setView(layout)
             .setPositiveButton("Guardar") { _, _ ->
                 val name = etName.text.toString().trim()
@@ -114,7 +114,7 @@ class SportsFragment : Fragment() {
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         repository.createSport(newSport)
-                        Toast.makeText(context, "Deporte aÃ±adido con Ã©xito", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Deporte añadido con éxito", Toast.LENGTH_SHORT).show()
                         loadSports()
                     }
                 } else {
@@ -127,10 +127,10 @@ class SportsFragment : Fragment() {
 
     private fun confirmDeleteSport(sport: Sport) {
         // Regla de integridad referencial de Figma/Documento:
-        // Si el deporte tiene torneos activos (como FÃºtbol o Baloncesto), se notifica la restricciÃ³n.
-        if (sport.nombreDeporte.equals("FÃºtbol", ignoreCase = true) || sport.nombreDeporte.equals("Basketball", ignoreCase = true)) {
+        // Si el deporte tiene torneos activos (como Fútbol o Baloncesto), se notifica la restricción.
+        if (sport.nombreDeporte.equals("Fútbol", ignoreCase = true) || sport.nombreDeporte.equals("Basketball", ignoreCase = true)) {
             AlertDialog.Builder(requireContext())
-                .setTitle("AcciÃ³n no permitida")
+                .setTitle("Acción no permitida")
                 .setMessage("No se puede eliminar '${sport.nombreDeporte}' porque tiene torneos y encuentros activos asociados.")
                 .setPositiveButton("Entendido", null)
                 .show()
@@ -139,7 +139,7 @@ class SportsFragment : Fragment() {
 
         AlertDialog.Builder(requireContext())
             .setTitle("Eliminar Deporte")
-            .setMessage("Â¿EstÃ¡s seguro de eliminar '${sport.nombreDeporte}'?")
+            .setMessage("¿Estás seguro de eliminar '${sport.nombreDeporte}'?")
             .setPositiveButton("Eliminar") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
                     repository.deleteSport(sport.idDeporte)
@@ -156,4 +156,3 @@ class SportsFragment : Fragment() {
         _binding = null
     }
 }
-

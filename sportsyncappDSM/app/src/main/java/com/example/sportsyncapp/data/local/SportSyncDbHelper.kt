@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.data.local
+package com.example.sportsyncapp.data.local
 
 import android.content.ContentValues
 import android.content.Context
@@ -80,8 +80,8 @@ class SportSyncDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             )"""
         )
         // Datos iniciales en SQLite
-        insertInitialSport(db, "FÃºtbol", "ic_nav_sports", "Disciplina tradicional de 11 vs 11 jugadores.")
-        insertInitialSport(db, "Basketball", "ic_nav_sports", "Torneos 5 vs 5 y relÃ¡mpagos 3x3 en duela.")
+        insertInitialSport(db, "Fútbol", "ic_nav_sports", "Disciplina tradicional de 11 vs 11 jugadores.")
+        insertInitialSport(db, "Basketball", "ic_nav_sports", "Torneos 5 vs 5 y relámpagos 3x3 en duela.")
         insertInitialSport(db, "Voleyball", "ic_nav_sports", "Voleibol institucional.")
 
         // ---- Eventos ----
@@ -100,9 +100,9 @@ class SportSyncDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             )"""
         )
         // Eventos demo
-        insertInitialEvent(db, 1, "FÃºtbol", 1, "UES - Sede Central", "Torneo Apertura 2024", "01/06/2024", 2, "En curso", "Torneo oficial de apertura 2024.")
+        insertInitialEvent(db, 1, "Fútbol", 1, "UES - Sede Central", "Torneo Apertura 2024", "01/06/2024", 2, "En curso", "Torneo oficial de apertura 2024.")
         insertInitialEvent(db, 2, "Basketball", 1, "Gimnasio UES", "Liga Universitaria", "15/06/2024", 2, "En curso", "Liga de baloncesto universitario con 8 equipos.")
-        insertInitialEvent(db, 3, "Voleyball", 4, "Colegio San JosÃ©", "Copa Intercolegial", "20/06/2024", 1, "Pendiente", "Copa anual de voleibol colegial.")
+        insertInitialEvent(db, 3, "Voleyball", 4, "Colegio San José", "Copa Intercolegial", "20/06/2024", 1, "Pendiente", "Copa anual de voleibol colegial.")
 
         // ---- Inscripciones ----
         db.execSQL(
@@ -123,7 +123,7 @@ class SportSyncDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             )"""
         )
         // Inscripciones demo
-        insertInitialInscription(db, 1, "Torneo Apertura 2024", "Equipo", 2, "Ãguilas FC", null, null, 1, "Luis Calvillo", "01/05/2024", 1, "Pendiente")
+        insertInitialInscription(db, 1, "Torneo Apertura 2024", "Equipo", 2, "Águilas FC", null, null, 1, "Luis Calvillo", "01/05/2024", 1, "Pendiente")
         insertInitialInscription(db, 2, "Liga Universitaria", "Individual", null, null, 1, "Luis Fernando", 1, "Luis Fernando", "15/05/2024", 2, "Aprobado")
 
         // ---- Partidos ----
@@ -145,8 +145,8 @@ class SportSyncDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
             )"""
         )
         // Partidos demo
-        insertInitialMatch(db, 1, "Torneo Apertura 2024", 1, "UES FC", 2, "Ãguilas FC", 2, 1, "01/06/2024", "14:00", 3, "Finalizado")
-        insertInitialMatch(db, 1, "Torneo Apertura 2024", 3, "San JosÃ© FC", 1, "UES FC", 0, 0, "15/06/2024", "16:30", 2, "En curso")
+        insertInitialMatch(db, 1, "Torneo Apertura 2024", 1, "UES FC", 2, "Águilas FC", 2, 1, "01/06/2024", "14:00", 3, "Finalizado")
+        insertInitialMatch(db, 1, "Torneo Apertura 2024", 3, "San José FC", 1, "UES FC", 0, 0, "15/06/2024", "16:30", 2, "En curso")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -423,4 +423,3 @@ class SportSyncDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_N
         return db.insert(TABLE_PARTIDOS, null, v)
     }
 }
-

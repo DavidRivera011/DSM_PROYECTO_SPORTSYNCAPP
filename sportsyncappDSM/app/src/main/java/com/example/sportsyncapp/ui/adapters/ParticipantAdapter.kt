@@ -1,4 +1,4 @@
-﻿package com.example.sportsyncapp.ui.adapters
+package com.example.sportsyncapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -45,4 +45,3 @@ class ParticipantAdapter(
         notifyDataSetChanged()
     }
 }
-
