@@ -1,8 +1,10 @@
-package com.example.sportsyncapp
+package com.example.sportsyncapp.data.repository
 
 import android.util.Log
 import com.example.sportsyncapp.connector.DefaultConnector
 import com.example.sportsyncapp.connector.execute
+import com.example.sportsyncapp.data.model.Usuario
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dataconnect.FirebaseDataConnect
 import com.google.firebase.dataconnect.LocalDate
 import com.google.firebase.dataconnect.getInstance
@@ -11,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
-import com.google.firebase.auth.FirebaseAuth
 
 class UsuarioRepository {
 
@@ -68,8 +69,7 @@ class UsuarioRepository {
                     nombre = usuario.nombre,
                     apellido = usuario.apellido,
                     correo = usuario.correo,
-                    fechaNacimiento = fechaNacimiento,
-                    rolId = UUID.fromString(usuario.rolId)
+                    fechaNacimiento = fechaNacimiento
                 ) {
                     fotoPerfil = usuario.fotoPerfil
                 }
@@ -152,14 +152,25 @@ class UsuarioRepository {
                     return@launch
                 }
 
+                val nombreRol = datos.rol.nombreRol
+
+                val rolId = when (nombreRol.trim().lowercase()) {
+                    "administrador", "admin" -> ROL_ADMINISTRADOR.toString()
+                    else -> ROL_USUARIO.toString()
+                }
+
                 val usuario = Usuario(
                     nombre = datos.nombre,
                     apellido = datos.apellido,
                     correo = datos.correo,
                     fechaNacimiento = datos.fechaNacimiento.toString(),
-                    rolId = ROL_USUARIO.toString(),
+                    rolId = rolId,
                     fotoPerfil = datos.fotoPerfil
                 )
+
+                Log.i(TAG, "Usuario encontrado: ${usuario.nombre}")
+                Log.i(TAG, "Rol obtenido desde Data Connect: $nombreRol")
+                Log.i(TAG, "Rol asignado a la aplicación: $rolId")
 
                 Log.i(
                     TAG,
@@ -185,41 +196,112 @@ class UsuarioRepository {
         }
     }
 
+
+    // ---------------------------------------------------------------
+    // ACTUALIZAR PERFIL DEL USUARIO ACTUAL
+    // ---------------------------------------------------------------
+
+    fun actualizarUsuarioActual(
+        nombre: String,
+        apellido: String,
+        fechaNacimiento: String,
+        alTerminar: (Boolean) -> Unit
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+                if (uid == null) {
+                    Log.w(TAG, "No hay usuario autenticado para actualizar")
+                    withContext(Dispatchers.Main) {
+                        alTerminar(false)
+                    }
+                    return@launch
+                }
+
+                val fecha = convertirFecha(fechaNacimiento)
+
+                if (fecha == null) {
+                    Log.e(
+                        TAG,
+                        "Fecha de nacimiento inválida: $fechaNacimiento"
+                    )
+                    withContext(Dispatchers.Main) {
+                        alTerminar(false)
+                    }
+                    return@launch
+                }
+
+                Log.i(TAG, "Actualizando perfil para UID: $uid")
+
+                conector.updateUsuario.execute(
+                    nombre = nombre.trim(),
+                    apellido = apellido.trim(),
+                    fechaNacimiento = fecha
+                )
+
+                Log.i(TAG, "Perfil actualizado correctamente")
+
+                withContext(Dispatchers.Main) {
+                    alTerminar(true)
+                }
+
+            } catch (error: Exception) {
+                Log.e(
+                    TAG,
+                    "Error al actualizar perfil en SQL Connect",
+                    error
+                )
+
+                withContext(Dispatchers.Main) {
+                    alTerminar(false)
+                }
+            }
+        }
+    }
+
     // ---------------------------------------------------------------
     // CONVERTIR FECHA
+    // Acepta dd/MM/yyyy y yyyy-MM-dd
     // ---------------------------------------------------------------
 
-    private fun convertirFecha(
-        fecha: String
-    ): LocalDate? {
-
+    private fun convertirFecha(fecha: String): LocalDate? {
         return try {
+            val texto = fecha.trim()
 
-            val partes = fecha.split("/")
+            if (texto.matches(Regex("""\d{4}-\d{2}-\d{2}"""))) {
+                val partes = texto.split("-")
 
-            if (partes.size != 3) {
-                return null
+                LocalDate(
+                    year = partes[0].toInt(),
+                    month = partes[1].toInt(),
+                    day = partes[2].toInt()
+                )
+            } else {
+                val partes = texto.split("/")
+
+                if (partes.size != 3) {
+                    return null
+                }
+
+                val dia = partes[0].toInt()
+                val mes = partes[1].toInt()
+                val anio = partes[2].toInt()
+
+                LocalDate(
+                    year = anio,
+                    month = mes,
+                    day = dia
+                )
             }
-
-            val dia = partes[0].toInt()
-            val mes = partes[1].toInt()
-            val anio = partes[2].toInt()
-
-            LocalDate(
-                year = anio,
-                month = mes,
-                day = dia
-            )
-
         } catch (error: Exception) {
-
             Log.e(
                 TAG,
                 "Error convirtiendo fecha: $fecha",
                 error
             )
-
             null
         }
     }
+
 }

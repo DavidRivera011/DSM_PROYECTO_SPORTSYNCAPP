@@ -27,6 +27,9 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import android.util.Patterns
+import com.example.sportsyncapp.ui.main.MainActivity
+import com.example.sportsyncapp.data.model.Usuario
+import com.example.sportsyncapp.data.repository.UsuarioRepository
 
 class LoginActivity : AppCompatActivity() {
 

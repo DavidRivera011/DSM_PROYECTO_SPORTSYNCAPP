@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clickable="false"
+    android:focusable="false"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvEventName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Nombre del evento"
+            android:textColor="@color/sportsync_text_dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEventDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Fecha: 20/10/2026"
+            android:textColor="@color/sportsync_text_muted"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvEventSport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Deporte: Fútbol"
+            android:textColor="@color/sportsync_text_dark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvEventInstitution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Institución: Universidad"
+            android:textColor="@color/sportsync_text_dark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvEventStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_team_input"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="5dp"
+            android:text="Próximo"
+            android:textColor="@color/sportsync_text_dark"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/layoutEventActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnEditEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_button_orange"
+                android:paddingHorizontal="10dp"
+                android:text="Editar"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btnDeleteEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_button_orange"
+                android:paddingHorizontal="8dp"
+                android:text="Eliminar"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

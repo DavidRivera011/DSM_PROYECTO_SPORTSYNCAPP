@@ -12,4 +12,32 @@
     <color name="texto_blanco">#FFFFFF</color>
     <color name="texto_negro">#1A1A1A</color>
 
+
+    <color name="sportsync_bg">#F7EEE4</color>
+    <color name="sportsync_card_dark">#4B2217</color>
+    <color name="sportsync_card_dark_variant">#36170E</color>
+    <color name="sportsync_primary_orange">#E16239</color>
+    <color name="sportsync_orange_light">#F57C50</color>
+    <color name="sportsync_peach">#F3B38B</color>
+    <color name="sportsync_peach_light">#FDEEE2</color>
+    <color name="sportsync_text_dark">#2B160F</color>
+    <color name="sportsync_text_muted">#7D6D65</color>
+    <color name="sportsync_text_light">#FFFFFF</color>
+    <color name="sportsync_nav_bg">#4B2217</color>
+    <color name="sportsync_nav_selected">#F3B38B</color>
+    <color name="sportsync_nav_unselected">#CDB4AA</color>
+
+    <!-- Status Badges -->
+    <color name="status_pending">#E08E1A</color>
+    <color name="status_in_progress">#2563EB</color>
+    <color name="status_finished">#059669</color>
+    <color name="status_rejected">#DC2626</color>
+    <color name="status_approved">#16A34A</color>
+
+    <!-- UI Elements -->
+    <color name="sportsync_input_bg">#FFFFFF</color>
+    <color name="sportsync_input_stroke">#E3D4C7</color>
+    <color name="sportsync_gray_btn">#6B7280</color>
+    <color name="sportsync_divider">#E8DCCF</color>
+
 </resources>

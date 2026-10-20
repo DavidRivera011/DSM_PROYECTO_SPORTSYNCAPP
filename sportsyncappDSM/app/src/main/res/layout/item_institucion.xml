@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/imgLogoInstitucion"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="Logo de la institución"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_sport_ball" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNombreInstitucion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la institución"
+            android:textColor="@color/sportsync_text_dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDescripcionInstitucion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Descripción de la institución"
+            android:textSize="14sp" />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnEliminarInstitucion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Eliminar"
+        android:textAllCaps="false"
+        android:visibility="gone" />
+
+</LinearLayout>

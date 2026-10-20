@@ -15,11 +15,11 @@ type Usuarios @table {
 type Instituciones @table {
   nombre: String!
   logo: String
+  descripcion: String
 }
 
 type Deportes @table {
   nombreDeporte: String!
-  fotoDeporte: String!
 }
 
 type Equipos @table {

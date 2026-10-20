@@ -1,4 +1,4 @@
-package com.example.sportsyncapp
+package com.example.sportsyncapp.data.model
 
 data class Usuario(
     val nombre: String = "",

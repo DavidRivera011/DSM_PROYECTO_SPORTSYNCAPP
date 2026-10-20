@@ -9,9 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sportsyncapp.databinding.ActivityRegisterBinding
+import com.example.sportsyncapp.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 import java.util.Locale
+import com.example.sportsyncapp.data.model.Usuario
+import com.example.sportsyncapp.data.repository.UsuarioRepository
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -49,16 +52,44 @@ class RegisterActivity : AppCompatActivity() {
     // LISTENERS
     // ---------------------------------------------------------------
 
+
     private fun configurarListeners() {
 
-        binding.btnRegistrar.setOnClickListener {
-            validarYRegistrar()
-        }
-
+        // Cancelar el registro y volver al login
         binding.btnCancelar.setOnClickListener {
             volverAlLogin()
         }
+
+        // PASO 1 -> PASO 2
+        binding.btnContinuar.setOnClickListener {
+            if (validarDatosPersonales()) {
+                binding.layoutStep1.visibility = android.view.View.GONE
+                binding.layoutStep2.visibility = android.view.View.VISIBLE
+
+                binding.tvStepIndicator.text =
+                    "Paso 2 de 2: Credenciales"
+
+                binding.tvError.text = ""
+            }
+        }
+
+        // PASO 2 -> PASO 1
+        binding.btnRegresar.setOnClickListener {
+            binding.layoutStep2.visibility = android.view.View.GONE
+            binding.layoutStep1.visibility = android.view.View.VISIBLE
+
+            binding.tvStepIndicator.text =
+                "Paso 1 de 2: Datos personales"
+
+            binding.tvError.text = ""
+        }
+
+        // Finalizar el registro con tu lógica actual
+        binding.btnRegistrar.setOnClickListener {
+            validarYRegistrar()
+        }
     }
+
 
     // ---------------------------------------------------------------
     // SELECTS DE FECHA (dia / mes / anio)
@@ -246,96 +277,77 @@ class RegisterActivity : AppCompatActivity() {
     // VALIDACIÓN
     // ---------------------------------------------------------------
 
+
     private fun validarYRegistrar() {
 
-        val nombre =
-            binding.etNombre.text.toString().trim()
+        val nombre = binding.etNombre.text.toString().trim()
+        val apellido = binding.etApellido.text.toString().trim()
+        val correo = binding.etCorreo.text.toString().trim()
 
-        val apellido =
-            binding.etApellido.text.toString().trim()
-
-        val correo =
-            binding.etCorreo.text.toString().trim()
-
-        // NO hacemos trim a la contraseña
-        val contrasena =
-            binding.etContrasena.text.toString()
-
+        // No hacemos trim a las contraseñas
+        val contrasena = binding.etContrasena.text.toString()
         val contrasenaRepeticion =
             binding.etContrasenaRepeticion.text.toString()
 
-        val fechaNacimiento =
-            obtenerFechaNacimientoSeleccionada()
+        val fechaNacimiento = obtenerFechaNacimientoSeleccionada()
 
         binding.tvError.text = ""
 
         when {
 
-            nombre.isEmpty() -> {
-                mostrarError("Ingrese su nombre")
+            nombre.length < 2 -> {
+                mostrarError("Digite un nombre real")
+                binding.etNombre.requestFocus()
                 return
             }
 
-            !nombre.matches(
-                Regex("^[\\p{L} .'-]+$")
-            ) -> {
-                mostrarError(
-                    "El nombre solo puede contener letras"
-                )
+            !nombre.matches(Regex("^[\\p{L} .'-]+$")) -> {
+                mostrarError("Digite un nombre real")
+                binding.etNombre.requestFocus()
                 return
             }
 
-            apellido.isEmpty() -> {
-                mostrarError("Ingrese su apellido")
+            apellido.length < 2 -> {
+                mostrarError("Digite un apellido real")
+                binding.etApellido.requestFocus()
                 return
             }
 
-            !apellido.matches(
-                Regex("^[\\p{L} .'-]+$")
-            ) -> {
-                mostrarError(
-                    "El apellido solo puede contener letras"
-                )
+            !apellido.matches(Regex("^[\\p{L} .'-]+$")) -> {
+                mostrarError("Digite un apellido real")
+                binding.etApellido.requestFocus()
                 return
             }
 
             correo.isEmpty() -> {
-                mostrarError(
-                    "Ingrese su correo electrónico"
-                )
+                mostrarError("Ingrese su correo electrónico")
+                binding.etCorreo.requestFocus()
                 return
             }
 
-            !Patterns.EMAIL_ADDRESS
-                .matcher(correo)
-                .matches() -> {
-                mostrarError(
-                    "Ingrese un correo electrónico válido"
-                )
+            !Patterns.EMAIL_ADDRESS.matcher(correo).matches() -> {
+                mostrarError("Ingrese un correo electrónico válido")
+                binding.etCorreo.requestFocus()
                 return
             }
 
             contrasena.isEmpty() -> {
-                mostrarError(
-                    "Ingrese una contraseña"
-                )
+                mostrarError("Ingrese una contraseña")
+                binding.etContrasena.requestFocus()
                 return
             }
 
             contrasena.length < 6 -> {
-                mostrarError(
-                    "La contraseña debe tener al menos 6 caracteres"
-                )
+                mostrarError("La contraseña debe tener al menos 6 caracteres")
+                binding.etContrasena.requestFocus()
                 return
             }
 
             contrasena != contrasenaRepeticion -> {
-                mostrarError(
-                    "Las contraseñas no coinciden"
-                )
+                mostrarError("Las contraseñas no coinciden")
+                binding.etContrasenaRepeticion.requestFocus()
                 return
             }
-
         }
 
         registrarUsuario(
@@ -346,6 +358,44 @@ class RegisterActivity : AppCompatActivity() {
             fechaNacimiento = fechaNacimiento
         )
     }
+
+
+    private fun validarDatosPersonales(): Boolean {
+        val nombre = binding.etNombre.text.toString().trim()
+        val apellido = binding.etApellido.text.toString().trim()
+
+        binding.tvError.text = ""
+
+        when {
+            nombre.length < 2 -> {
+                binding.tvError.text = "Digite un nombre real"
+                binding.etNombre.requestFocus()
+                return false
+            }
+
+            !nombre.matches(Regex("^[\\p{L} .'-]+$")) -> {
+                binding.tvError.text = "Digite un nombre real"
+                binding.etNombre.requestFocus()
+                return false
+            }
+
+            apellido.length < 2 -> {
+                binding.tvError.text = "Digite un apellido real"
+                binding.etApellido.requestFocus()
+                return false
+            }
+
+            !apellido.matches(Regex("^[\\p{L} .'-]+$")) -> {
+                binding.tvError.text = "Digite un apellido real"
+                binding.etApellido.requestFocus()
+                return false
+            }
+        }
+
+        return true
+    }
+
+
 
     private fun volverAlLogin() {
 

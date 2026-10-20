@@ -33,8 +33,6 @@ public interface CreateUsuarioMutation :
   
     val fechaNacimiento: com.google.firebase.dataconnect.LocalDate,
   
-    val rolId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
-  
     val fotoPerfil: com.google.firebase.dataconnect.OptionalVariable<String?>,
   
   ) {
@@ -50,7 +48,6 @@ public interface CreateUsuarioMutation :
         public var apellido: String
         public var correo: String
         public var fechaNacimiento: com.google.firebase.dataconnect.LocalDate
-        public var rolId: java.util.UUID
         public var fotoPerfil: String?
         
       }
@@ -59,14 +56,13 @@ public interface CreateUsuarioMutation :
         
         @Suppress("NAME_SHADOWING")
         public fun build(
-          nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,rolId: java.util.UUID,
+          nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,
           block_: Builder.() -> Unit
         ): Variables {
           var nombre= nombre
             var apellido= apellido
             var correo= correo
             var fechaNacimiento= fechaNacimiento
-            var rolId= rolId
             var fotoPerfil: com.google.firebase.dataconnect.OptionalVariable<String?> =
                 com.google.firebase.dataconnect.OptionalVariable.Undefined
             
@@ -88,10 +84,6 @@ public interface CreateUsuarioMutation :
               get() = throw UnsupportedOperationException("getting builder values is not supported")
               set(value_) { fechaNacimiento = value_ }
               
-            override var rolId: java.util.UUID
-              get() = throw UnsupportedOperationException("getting builder values is not supported")
-              set(value_) { rolId = value_ }
-              
             override var fotoPerfil: String?
               get() = throw UnsupportedOperationException("getting builder values is not supported")
               set(value_) { fotoPerfil = com.google.firebase.dataconnect.OptionalVariable.Value(value_) }
@@ -100,7 +92,7 @@ public interface CreateUsuarioMutation :
           }.apply(block_)
           .let {
             Variables(
-              nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,rolId=rolId,fotoPerfil=fotoPerfil,
+              nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,fotoPerfil=fotoPerfil,
             )
           }
         }
@@ -134,7 +126,7 @@ public interface CreateUsuarioMutation :
 
 public fun CreateUsuarioMutation.ref(
   
-    nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,rolId: java.util.UUID,
+    nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,
 
   
     block_: CreateUsuarioMutation.Variables.Builder.() -> Unit = {}
@@ -146,7 +138,7 @@ public fun CreateUsuarioMutation.ref(
   ref(
     
       CreateUsuarioMutation.Variables.build(
-        nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,rolId=rolId,
+        nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,
   
     block_
       )
@@ -157,7 +149,7 @@ public suspend fun CreateUsuarioMutation.execute(
 
   
     
-      nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,rolId: java.util.UUID,
+      nombre: String,apellido: String,correo: String,fechaNacimiento: com.google.firebase.dataconnect.LocalDate,
 
   
     block_: CreateUsuarioMutation.Variables.Builder.() -> Unit = {}
@@ -168,7 +160,7 @@ public suspend fun CreateUsuarioMutation.execute(
   > =
   ref(
     
-      nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,rolId=rolId,
+      nombre=nombre,apellido=apellido,correo=correo,fechaNacimiento=fechaNacimiento,
   
     block_
     

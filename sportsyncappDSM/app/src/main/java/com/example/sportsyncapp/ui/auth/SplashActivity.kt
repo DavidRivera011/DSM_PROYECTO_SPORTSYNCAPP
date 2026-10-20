@@ -1,10 +1,13 @@
-package com.example.sportsyncapp
+package com.example.sportsyncapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sportsyncapp.LoginActivity
+import com.example.sportsyncapp.data.repository.UsuarioRepository
 import com.example.sportsyncapp.databinding.ActivitySplashBinding
+import com.example.sportsyncapp.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {

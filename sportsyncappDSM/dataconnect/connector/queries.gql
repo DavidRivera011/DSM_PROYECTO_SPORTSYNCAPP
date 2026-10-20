@@ -14,3 +14,209 @@ query GetCurrentUsuario($id: String! = "auth.uid") @auth(level: USER) {
     }
   }
 }
+
+# Obtiene todos los deportes registrados.
+query GetDeportes @auth(level: USER) {
+  deportess {
+    id
+    nombreDeporte
+  }
+}
+
+# Obtiene las instituciones disponibles.
+query GetInstituciones @auth(level: USER) {
+  institucioness {
+    id
+    nombre
+    logo
+    descripcion
+  }
+}
+
+query GetEquipos @auth(level: USER) {
+  equiposs {
+    id
+    nombreEquipo
+    institucion {
+      id
+      nombre
+    }
+    deporte {
+      id
+      nombreDeporte
+    }
+  }
+}
+
+#Obtiene todos los eventos con sus relaciones: deporte, institución y estado.
+query GetEventos @auth(level: USER) {
+  eventoss {
+    id
+    nombre
+    fecha
+    deporte {
+      id
+      nombreDeporte
+    }
+    institucion {
+      id
+      nombre
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+#Obtiene un evento específico por su identificador.
+query GetEventoPorId($id: UUID!)
+@auth(level: USER) {
+  eventoss(where: { id: { eq: $id } }) {
+    id
+    nombre
+    fecha
+    deporte {
+      id
+      nombreDeporte
+    }
+    institucion {
+      id
+      nombre
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+#Permite cargar los estados disponibles en el formulario de creación o edición.
+query GetEstadosEvento @auth(level: USER) {
+  estadosEventos {
+    id
+    nombreEstado
+  }
+}
+
+#Consulta los deportes y las instituciones que aparecerán en los selectores del formulario. Puedes usar estas operaciones para cargar cada catálogo por separado
+
+# Obtiene los deportes disponibles para el formulario de eventos.
+query GetDeportesEvento @auth(level: USER) {
+  deportess {
+    id
+    nombreDeporte
+  }
+}
+
+# Obtiene las instituciones disponibles para el formulario de eventos.
+query GetInstitucionesEvento @auth(level: USER) {
+  institucioness {
+    id
+    nombre
+  }
+}
+
+# Obtener todos los partidos con sus relaciones.
+query GetPartidos @auth(level: USER) {
+  partidoss(limit: 100) {
+    id
+    evento {
+      id
+      nombre
+      fecha
+    }
+    equipoLocal {
+      id
+      nombreEquipo
+    }
+    equipoVisitante {
+      id
+      nombreEquipo
+    }
+    marcadorLocal
+    marcadorVisitante
+    fecha
+    hora
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+# Obtener un partido específico por ID.
+query GetPartidoPorId($id: UUID!) @auth(level: USER) {
+  partidoss(
+    where: { id: { eq: $id } }
+    limit: 1
+  ) {
+    id
+    evento {
+      id
+      nombre
+      fecha
+    }
+    equipoLocal {
+      id
+      nombreEquipo
+    }
+    equipoVisitante {
+      id
+      nombreEquipo
+    }
+    marcadorLocal
+    marcadorVisitante
+    fecha
+    hora
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+# Obtener los estados disponibles para los partidos.
+query GetEstadosPartido @auth(level: USER) {
+  estadosPartidoss(limit: 100) {
+    id
+    nombreEstado
+  }
+}
+
+# Obtener los eventos disponibles para asociar a un partido.
+query GetEventosPartido @auth(level: USER) {
+  eventoss(limit: 100) {
+    id
+    nombre
+    fecha
+    deporte {
+      id
+      nombreDeporte
+    }
+    institucion {
+      id
+      nombre
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+# Obtener los equipos disponibles para los partidos.
+query GetEquiposPartido @auth(level: USER) {
+  equiposs(limit: 100) {
+    id
+    nombreEquipo
+    institucion {
+      id
+      nombre
+    }
+    deporte {
+      id
+      nombreDeporte
+    }
+  }
+}
