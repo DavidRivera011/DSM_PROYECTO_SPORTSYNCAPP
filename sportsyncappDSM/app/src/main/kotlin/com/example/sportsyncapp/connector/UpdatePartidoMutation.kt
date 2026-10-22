@@ -29,6 +29,8 @@ public interface UpdatePartidoMutation :
   
     val eventoId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
   
+    val deporteId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
+  
     val equipoLocalId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
   
     val equipoVisitanteId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
@@ -70,7 +72,7 @@ public interface UpdatePartidoMutation :
 
 public fun UpdatePartidoMutation.ref(
   
-    id: java.util.UUID,eventoId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
+    id: java.util.UUID,eventoId: java.util.UUID,deporteId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
 
   
   
@@ -81,7 +83,7 @@ public fun UpdatePartidoMutation.ref(
   ref(
     
       UpdatePartidoMutation.Variables(
-        id=id,eventoId=eventoId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
+        id=id,eventoId=eventoId,deporteId=deporteId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
   
       )
     
@@ -91,7 +93,7 @@ public suspend fun UpdatePartidoMutation.execute(
 
   
     
-      id: java.util.UUID,eventoId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
+      id: java.util.UUID,eventoId: java.util.UUID,deporteId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
 
   
 
@@ -101,7 +103,7 @@ public suspend fun UpdatePartidoMutation.execute(
   > =
   ref(
     
-      id=id,eventoId=eventoId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
+      id=id,eventoId=eventoId,deporteId=deporteId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
   
     
   ).execute()

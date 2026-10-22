@@ -59,12 +59,24 @@
 
     </LinearLayout>
 
-    <!-- Contenido -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:background="@color/sportsync_bg"
+    <!-- Contenido deslizable -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/sportsync_bg"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/secondary_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/sportsync_bg"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"

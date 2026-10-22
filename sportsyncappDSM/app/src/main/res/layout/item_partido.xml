@@ -4,80 +4,143 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="3dp">
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="7dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvMatchEvent"
+        <!-- Acento naranja superior -->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Evento deportivo"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvMatchTeams"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Equipo local vs Equipo visitante"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tvMatchScore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="0 - 0"
-            android:textSize="26sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvMatchDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="2026-10-20 · 15:00"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tvMatchStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Próximo"
-            android:textStyle="bold" />
+            android:layout_height="4dp"
+            android:background="@drawable/bg_button_orange" />
 
         <LinearLayout
-            android:id="@+id/layoutMatchActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnEditMatch"
+            <!-- Nombre del evento -->
+            <TextView
+                android:id="@+id/tvMatchEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Evento deportivo"
+                android:textColor="@color/sportsync_text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Separador -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_button_orange" />
+
+            <!-- Equipos -->
+            <TextView
+                android:id="@+id/tvMatchTeams"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:text="Equipo local vs Equipo visitante"
+                android:textColor="@color/sportsync_text_dark"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- Marcador -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/sportsync_bg"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/tvMatchScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0 - 0"
+                    android:textColor="@color/sportsync_text_dark"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Fecha y hora -->
+            <TextView
+                android:id="@+id/tvMatchDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="2026-10-20 · 15:00"
+                android:textColor="@color/sportsync_text_muted"
+                android:textSize="13sp" />
+
+            <!-- Estado -->
+            <TextView
+                android:id="@+id/tvMatchStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editar" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_match_status"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="Próximo"
+                android:textColor="@color/sportsync_text_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnDeleteMatch"
-                android:layout_width="wrap_content"
+            <!-- Acciones de administrador -->
+            <LinearLayout
+                android:id="@+id/layoutMatchActions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Eliminar" />
+                android:layout_marginTop="16dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnEditMatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_button_orange"
+                    android:paddingHorizontal="18dp"
+                    android:text="Editar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnDeleteMatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="#FCE8E6"
+                    android:paddingHorizontal="18dp"
+                    android:text="Eliminar"
+                    android:textAllCaps="false"
+                    android:textColor="#B3261E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

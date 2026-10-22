@@ -43,6 +43,10 @@ class PartidosRepository {
                         eventoId = dato.evento?.id?.toString(),
                         eventoNombre = dato.evento?.nombre ?: "Sin evento",
 
+                        deporteId = dato.deporte?.id?.toString(),
+                        deporteNombre =
+                            dato.deporte?.nombreDeporte ?: "Sin deporte",
+
                         equipoLocalId = dato.equipoLocal?.id?.toString(),
                         equipoLocalNombre =
                             dato.equipoLocal?.nombreEquipo ?: "Por definir",
@@ -93,10 +97,14 @@ class PartidosRepository {
         CoroutineScope(Dispatchers.IO).launch {
             val resultado = try {
                 val respuesta = conector.getEventosPartido.execute()
-                respuesta.data.eventoss.map {
+
+                respuesta.data.eventoss.map { evento ->
                     EventoPartido(
-                        id = it.id,
-                        nombre = it.nombre
+                        id = evento.id,
+                        nombre = evento.nombre,
+                        deporteId = evento.deporte?.id?.toString(),
+                        deporteNombre =
+                            evento.deporte?.nombreDeporte ?: "Sin deporte"
                     )
                 }
             } catch (error: Exception) {
@@ -117,6 +125,7 @@ class PartidosRepository {
         CoroutineScope(Dispatchers.IO).launch {
             val resultado = try {
                 val respuesta = conector.getEquiposPartido.execute()
+
                 respuesta.data.equiposs.map {
                     EquipoPartido(
                         id = it.id,
@@ -133,7 +142,6 @@ class PartidosRepository {
             }
         }
     }
-
 
     // OBTENER ESTADOS PARA FORMULARIO DE PARTIDOS
     fun obtenerEstadosPartido(
@@ -173,6 +181,7 @@ class PartidosRepository {
     // CREAR PARTIDO
     fun crearPartido(
         eventoId: UUID,
+        deporteId: UUID,
         equipoLocalId: UUID,
         equipoVisitanteId: UUID,
         fecha: LocalDate,
@@ -183,6 +192,7 @@ class PartidosRepository {
         ejecutarOperacion(alTerminar) {
             conector.createPartido.execute(
                 eventoId = eventoId,
+                deporteId = deporteId,
                 equipoLocalId = equipoLocalId,
                 equipoVisitanteId = equipoVisitanteId,
                 fecha = fecha,
@@ -196,6 +206,7 @@ class PartidosRepository {
     fun actualizarPartido(
         id: UUID,
         eventoId: UUID,
+        deporteId: UUID,
         equipoLocalId: UUID,
         equipoVisitanteId: UUID,
         fecha: LocalDate,
@@ -207,6 +218,7 @@ class PartidosRepository {
             conector.updatePartido.execute(
                 id = id,
                 eventoId = eventoId,
+                deporteId = deporteId,
                 equipoLocalId = equipoLocalId,
                 equipoVisitanteId = equipoVisitanteId,
                 fecha = fecha,

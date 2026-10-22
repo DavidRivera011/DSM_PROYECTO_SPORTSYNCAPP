@@ -126,6 +126,10 @@ query GetPartidos @auth(level: USER) {
       nombre
       fecha
     }
+    deporte {
+      id
+      nombreDeporte
+    }
     equipoLocal {
       id
       nombreEquipo
@@ -156,6 +160,10 @@ query GetPartidoPorId($id: UUID!) @auth(level: USER) {
       id
       nombre
       fecha
+    }
+    deporte {
+      id
+      nombreDeporte
     }
     equipoLocal {
       id
@@ -218,5 +226,189 @@ query GetEquiposPartido @auth(level: USER) {
       id
       nombreDeporte
     }
+  }
+}
+
+# Obtener los estados disponibles para las solicitudes.
+query GetEstadosSolicitud @auth(level: USER) {
+  estadosSolicitudess(limit: 100) {
+    id
+    nombreEstado
+  }
+}
+
+# Obtener las solicitudes del usuario autenticado.
+query GetSolicitudesPropias @auth(level: USER) {
+  solicitudess(
+    where: { usuarioId: { eq_expr: "auth.uid" } }
+    limit: 100
+  ) {
+    id
+    nombreDeportivo
+    fotoDeportiva
+    fechaSolicitud
+    deporte {
+      id
+      nombreDeporte
+    }
+    tipoPerfil {
+      id
+      nombrePerfil
+    }
+    institucion {
+      id
+      nombre
+    }
+    equipo {
+      id
+      nombreEquipo
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+# Obtener todas las solicitudes para revisión administrativa.
+# Solo permite el acceso al rol Administrador.
+query GetSolicitudesAdmin @auth(level: USER) {
+  usuarios(id_expr: "auth.uid") {
+    rol {
+      nombreRol @check(
+        expr: "this == 'Administrador'"
+        message: "Solo un administrador puede consultar todas las solicitudes."
+      )
+    }
+  }
+
+  solicitudess(limit: 100) {
+    id
+    nombreDeportivo
+    fotoDeportiva
+    fechaSolicitud
+    usuario {
+      id
+      nombre
+      apellido
+      correo
+    }
+    deporte {
+      id
+      nombreDeporte
+    }
+    tipoPerfil {
+      id
+      nombrePerfil
+    }
+    institucion {
+      id
+      nombre
+    }
+    equipo {
+      id
+      nombreEquipo
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+
+# Obtener todas las inscripciones para revisión administrativa.
+query GetInscripcionesAdmin @auth(level: USER) {
+  usuarios(id_expr: "auth.uid") {
+    rol {
+      nombreRol @check(
+        expr: "this == 'Administrador'"
+        message: "Solo un administrador puede consultar todas las inscripciones."
+      )
+    }
+  }
+
+  inscripcioness(limit: 100) {
+    id
+    fechaInscripcion
+    evento {
+      id
+      nombre
+      fecha
+    }
+    equipo {
+      id
+      nombreEquipo
+    }
+    perfil {
+      id
+      nombreDeportivo
+      usuario {
+        id
+        nombre
+        apellido
+      }
+    }
+    usuarioSolicitante {
+      id
+      nombre
+      apellido
+      correo
+    }
+    usuarioRevisor {
+      id
+      nombre
+      apellido
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+
+query GetInscripcionesPropias @auth(level: USER) {
+  inscripcioness(
+    where: {
+      usuarioSolicitanteId: { eq_expr: "auth.uid" }
+    }
+    limit: 100
+  ) {
+    id
+    fechaInscripcion
+    evento {
+      id
+      nombre
+      fecha
+    }
+    equipo {
+      id
+      nombreEquipo
+    }
+    perfil {
+      id
+      nombreDeportivo
+    }
+    estado {
+      id
+      nombreEstado
+    }
+  }
+}
+
+query GetEstadosInscripcion @auth(level: USER) {
+  estadosInscripcioness(limit: 100) {
+    id
+    nombreEstado
+  }
+}
+
+# Obtener los tipos de perfil disponibles para solicitar
+# un perfil deportivo.
+query GetTiposPerfil @auth(level: USER) {
+  tipoPerfils {
+    id
+    nombrePerfil
   }
 }

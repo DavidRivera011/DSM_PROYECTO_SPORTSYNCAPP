@@ -4,12 +4,15 @@ import java.io.Serializable
 import java.util.UUID
 
 data class Partido(
-    // Identificador del partido
     val id: String = "",
 
     // Información del evento
     val eventoId: String? = null,
     val eventoNombre: String = "",
+
+    // Deporte del evento
+    val deporteId: String? = null,
+    val deporteNombre: String = "Sin deporte",
 
     // Información de los equipos
     val equipoLocalId: String? = null,
@@ -32,7 +35,9 @@ data class Partido(
 
 data class EventoPartido(
     val id: UUID,
-    val nombre: String
+    val nombre: String,
+    val deporteId: String? = null,
+    val deporteNombre: String = "Sin deporte"
 )
 
 data class EquipoPartido(

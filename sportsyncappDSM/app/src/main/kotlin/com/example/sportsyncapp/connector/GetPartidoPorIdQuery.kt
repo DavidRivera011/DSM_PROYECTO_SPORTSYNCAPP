@@ -52,6 +52,8 @@ public interface GetPartidoPorIdQuery :
   
     val evento: Evento?,
   
+    val deporte: Deporte?,
+  
     val equipoLocal: EquipoLocal?,
   
     val equipoVisitante: EquipoVisitante?,
@@ -77,6 +79,18 @@ public interface GetPartidoPorIdQuery :
     val nombre: String,
   
     val fecha: com.google.firebase.dataconnect.LocalDate,
+  
+  ) {
+    
+    
+  }
+      
+        @kotlinx.serialization.Serializable
+  public data class Deporte(
+  
+    val id: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
+  
+    val nombreDeporte: String,
   
   ) {
     

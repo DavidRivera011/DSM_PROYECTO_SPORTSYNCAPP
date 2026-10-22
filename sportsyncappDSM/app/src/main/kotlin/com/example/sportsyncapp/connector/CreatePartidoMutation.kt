@@ -27,6 +27,8 @@ public interface CreatePartidoMutation :
   
     val eventoId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
   
+    val deporteId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
+  
     val equipoLocalId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
   
     val equipoVisitanteId: @kotlinx.serialization.Serializable(with = com.google.firebase.dataconnect.serializers.UUIDSerializer::class) java.util.UUID,
@@ -68,7 +70,7 @@ public interface CreatePartidoMutation :
 
 public fun CreatePartidoMutation.ref(
   
-    eventoId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
+    eventoId: java.util.UUID,deporteId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
 
   
   
@@ -79,7 +81,7 @@ public fun CreatePartidoMutation.ref(
   ref(
     
       CreatePartidoMutation.Variables(
-        eventoId=eventoId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
+        eventoId=eventoId,deporteId=deporteId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
   
       )
     
@@ -89,7 +91,7 @@ public suspend fun CreatePartidoMutation.execute(
 
   
     
-      eventoId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
+      eventoId: java.util.UUID,deporteId: java.util.UUID,equipoLocalId: java.util.UUID,equipoVisitanteId: java.util.UUID,fecha: com.google.firebase.dataconnect.LocalDate,hora: String,estadoId: java.util.UUID,
 
   
 
@@ -99,7 +101,7 @@ public suspend fun CreatePartidoMutation.execute(
   > =
   ref(
     
-      eventoId=eventoId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
+      eventoId=eventoId,deporteId=deporteId,equipoLocalId=equipoLocalId,equipoVisitanteId=equipoVisitanteId,fecha=fecha,hora=hora,estadoId=estadoId,
   
     
   ).execute()

@@ -25,9 +25,13 @@ public interface DefaultConnector : com.google.firebase.dataconnect.generated.Ge
   
     public val createEvento: CreateEventoMutation
   
+    public val createInscripcion: CreateInscripcionMutation
+  
     public val createInstitucion: CreateInstitucionMutation
   
     public val createPartido: CreatePartidoMutation
+  
+    public val createSolicitud: CreateSolicitudMutation
   
     public val createUsuario: CreateUsuarioMutation
   
@@ -37,9 +41,13 @@ public interface DefaultConnector : com.google.firebase.dataconnect.generated.Ge
   
     public val deleteEvento: DeleteEventoMutation
   
+    public val deleteInscripcion: DeleteInscripcionMutation
+  
     public val deleteInstitucion: DeleteInstitucionMutation
   
     public val deletePartido: DeletePartidoMutation
+  
+    public val deleteSolicitud: DeleteSolicitudMutation
   
     public val getCurrentUsuario: GetCurrentUsuarioQuery
   
@@ -53,13 +61,21 @@ public interface DefaultConnector : com.google.firebase.dataconnect.generated.Ge
   
     public val getEstadosEvento: GetEstadosEventoQuery
   
+    public val getEstadosInscripcion: GetEstadosInscripcionQuery
+  
     public val getEstadosPartido: GetEstadosPartidoQuery
+  
+    public val getEstadosSolicitud: GetEstadosSolicitudQuery
   
     public val getEventoPorId: GetEventoPorIdQuery
   
     public val getEventos: GetEventosQuery
   
     public val getEventosPartido: GetEventosPartidoQuery
+  
+    public val getInscripcionesAdmin: GetInscripcionesAdminQuery
+  
+    public val getInscripcionesPropias: GetInscripcionesPropiasQuery
   
     public val getInstituciones: GetInstitucionesQuery
   
@@ -69,17 +85,27 @@ public interface DefaultConnector : com.google.firebase.dataconnect.generated.Ge
   
     public val getPartidos: GetPartidosQuery
   
+    public val getSolicitudesAdmin: GetSolicitudesAdminQuery
+  
+    public val getSolicitudesPropias: GetSolicitudesPropiasQuery
+  
+    public val getTiposPerfil: GetTiposPerfilQuery
+  
     public val updateDeporte: UpdateDeporteMutation
   
     public val updateEquipo: UpdateEquipoMutation
   
     public val updateEvento: UpdateEventoMutation
   
+    public val updateInscripcion: UpdateInscripcionMutation
+  
     public val updateInstitucion: UpdateInstitucionMutation
   
     public val updateMarcadorPartido: UpdateMarcadorPartidoMutation
   
     public val updatePartido: UpdatePartidoMutation
+  
+    public val updateSolicitud: UpdateSolicitudMutation
   
     public val updateUsuario: UpdateUsuarioMutation
   
@@ -138,12 +164,20 @@ private class DefaultConnectorImpl(
       CreateEventoMutationImpl(this)
     }
   
+    override val createInscripcion by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      CreateInscripcionMutationImpl(this)
+    }
+  
     override val createInstitucion by lazy(LazyThreadSafetyMode.PUBLICATION) {
       CreateInstitucionMutationImpl(this)
     }
   
     override val createPartido by lazy(LazyThreadSafetyMode.PUBLICATION) {
       CreatePartidoMutationImpl(this)
+    }
+  
+    override val createSolicitud by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      CreateSolicitudMutationImpl(this)
     }
   
     override val createUsuario by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -162,12 +196,20 @@ private class DefaultConnectorImpl(
       DeleteEventoMutationImpl(this)
     }
   
+    override val deleteInscripcion by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      DeleteInscripcionMutationImpl(this)
+    }
+  
     override val deleteInstitucion by lazy(LazyThreadSafetyMode.PUBLICATION) {
       DeleteInstitucionMutationImpl(this)
     }
   
     override val deletePartido by lazy(LazyThreadSafetyMode.PUBLICATION) {
       DeletePartidoMutationImpl(this)
+    }
+  
+    override val deleteSolicitud by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      DeleteSolicitudMutationImpl(this)
     }
   
     override val getCurrentUsuario by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -194,8 +236,16 @@ private class DefaultConnectorImpl(
       GetEstadosEventoQueryImpl(this)
     }
   
+    override val getEstadosInscripcion by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetEstadosInscripcionQueryImpl(this)
+    }
+  
     override val getEstadosPartido by lazy(LazyThreadSafetyMode.PUBLICATION) {
       GetEstadosPartidoQueryImpl(this)
+    }
+  
+    override val getEstadosSolicitud by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetEstadosSolicitudQueryImpl(this)
     }
   
     override val getEventoPorId by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -208,6 +258,14 @@ private class DefaultConnectorImpl(
   
     override val getEventosPartido by lazy(LazyThreadSafetyMode.PUBLICATION) {
       GetEventosPartidoQueryImpl(this)
+    }
+  
+    override val getInscripcionesAdmin by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetInscripcionesAdminQueryImpl(this)
+    }
+  
+    override val getInscripcionesPropias by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetInscripcionesPropiasQueryImpl(this)
     }
   
     override val getInstituciones by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -226,6 +284,18 @@ private class DefaultConnectorImpl(
       GetPartidosQueryImpl(this)
     }
   
+    override val getSolicitudesAdmin by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetSolicitudesAdminQueryImpl(this)
+    }
+  
+    override val getSolicitudesPropias by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetSolicitudesPropiasQueryImpl(this)
+    }
+  
+    override val getTiposPerfil by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      GetTiposPerfilQueryImpl(this)
+    }
+  
     override val updateDeporte by lazy(LazyThreadSafetyMode.PUBLICATION) {
       UpdateDeporteMutationImpl(this)
     }
@@ -238,6 +308,10 @@ private class DefaultConnectorImpl(
       UpdateEventoMutationImpl(this)
     }
   
+    override val updateInscripcion by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      UpdateInscripcionMutationImpl(this)
+    }
+  
     override val updateInstitucion by lazy(LazyThreadSafetyMode.PUBLICATION) {
       UpdateInstitucionMutationImpl(this)
     }
@@ -248,6 +322,10 @@ private class DefaultConnectorImpl(
   
     override val updatePartido by lazy(LazyThreadSafetyMode.PUBLICATION) {
       UpdatePartidoMutationImpl(this)
+    }
+  
+    override val updateSolicitud by lazy(LazyThreadSafetyMode.PUBLICATION) {
+      UpdateSolicitudMutationImpl(this)
     }
   
     override val updateUsuario by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -265,20 +343,26 @@ private class DefaultConnectorImpl(
       createDeporte,
         createEquipo,
         createEvento,
+        createInscripcion,
         createInstitucion,
         createPartido,
+        createSolicitud,
         createUsuario,
         deleteDeporte,
         deleteEquipo,
         deleteEvento,
+        deleteInscripcion,
         deleteInstitucion,
         deletePartido,
+        deleteSolicitud,
         updateDeporte,
         updateEquipo,
         updateEvento,
+        updateInscripcion,
         updateInstitucion,
         updateMarcadorPartido,
         updatePartido,
+        updateSolicitud,
         updateUsuario,
         
     )
@@ -292,14 +376,21 @@ private class DefaultConnectorImpl(
         getEquipos,
         getEquiposPartido,
         getEstadosEvento,
+        getEstadosInscripcion,
         getEstadosPartido,
+        getEstadosSolicitud,
         getEventoPorId,
         getEventos,
         getEventosPartido,
+        getInscripcionesAdmin,
+        getInscripcionesPropias,
         getInstituciones,
         getInstitucionesEvento,
         getPartidoPorId,
         getPartidos,
+        getSolicitudesAdmin,
+        getSolicitudesPropias,
+        getTiposPerfil,
         
     )
 
@@ -480,6 +571,21 @@ private class CreateEventoMutationImpl(
   )
 
 
+private class CreateInscripcionMutationImpl(
+  connector: DefaultConnector
+):
+  CreateInscripcionMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      CreateInscripcionMutation.Data,
+      CreateInscripcionMutation.Variables
+  >(
+    connector,
+    CreateInscripcionMutation.Companion.operationName,
+    CreateInscripcionMutation.Companion.dataDeserializer,
+    CreateInscripcionMutation.Companion.variablesSerializer,
+  )
+
+
 private class CreateInstitucionMutationImpl(
   connector: DefaultConnector
 ):
@@ -507,6 +613,21 @@ private class CreatePartidoMutationImpl(
     CreatePartidoMutation.Companion.operationName,
     CreatePartidoMutation.Companion.dataDeserializer,
     CreatePartidoMutation.Companion.variablesSerializer,
+  )
+
+
+private class CreateSolicitudMutationImpl(
+  connector: DefaultConnector
+):
+  CreateSolicitudMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      CreateSolicitudMutation.Data,
+      CreateSolicitudMutation.Variables
+  >(
+    connector,
+    CreateSolicitudMutation.Companion.operationName,
+    CreateSolicitudMutation.Companion.dataDeserializer,
+    CreateSolicitudMutation.Companion.variablesSerializer,
   )
 
 
@@ -570,6 +691,21 @@ private class DeleteEventoMutationImpl(
   )
 
 
+private class DeleteInscripcionMutationImpl(
+  connector: DefaultConnector
+):
+  DeleteInscripcionMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      DeleteInscripcionMutation.Data,
+      DeleteInscripcionMutation.Variables
+  >(
+    connector,
+    DeleteInscripcionMutation.Companion.operationName,
+    DeleteInscripcionMutation.Companion.dataDeserializer,
+    DeleteInscripcionMutation.Companion.variablesSerializer,
+  )
+
+
 private class DeleteInstitucionMutationImpl(
   connector: DefaultConnector
 ):
@@ -597,6 +733,21 @@ private class DeletePartidoMutationImpl(
     DeletePartidoMutation.Companion.operationName,
     DeletePartidoMutation.Companion.dataDeserializer,
     DeletePartidoMutation.Companion.variablesSerializer,
+  )
+
+
+private class DeleteSolicitudMutationImpl(
+  connector: DefaultConnector
+):
+  DeleteSolicitudMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      DeleteSolicitudMutation.Data,
+      DeleteSolicitudMutation.Variables
+  >(
+    connector,
+    DeleteSolicitudMutation.Companion.operationName,
+    DeleteSolicitudMutation.Companion.dataDeserializer,
+    DeleteSolicitudMutation.Companion.variablesSerializer,
   )
 
 
@@ -690,6 +841,21 @@ private class GetEstadosEventoQueryImpl(
   )
 
 
+private class GetEstadosInscripcionQueryImpl(
+  connector: DefaultConnector
+):
+  GetEstadosInscripcionQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetEstadosInscripcionQuery.Data,
+      Unit
+  >(
+    connector,
+    GetEstadosInscripcionQuery.Companion.operationName,
+    GetEstadosInscripcionQuery.Companion.dataDeserializer,
+    GetEstadosInscripcionQuery.Companion.variablesSerializer,
+  )
+
+
 private class GetEstadosPartidoQueryImpl(
   connector: DefaultConnector
 ):
@@ -702,6 +868,21 @@ private class GetEstadosPartidoQueryImpl(
     GetEstadosPartidoQuery.Companion.operationName,
     GetEstadosPartidoQuery.Companion.dataDeserializer,
     GetEstadosPartidoQuery.Companion.variablesSerializer,
+  )
+
+
+private class GetEstadosSolicitudQueryImpl(
+  connector: DefaultConnector
+):
+  GetEstadosSolicitudQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetEstadosSolicitudQuery.Data,
+      Unit
+  >(
+    connector,
+    GetEstadosSolicitudQuery.Companion.operationName,
+    GetEstadosSolicitudQuery.Companion.dataDeserializer,
+    GetEstadosSolicitudQuery.Companion.variablesSerializer,
   )
 
 
@@ -747,6 +928,36 @@ private class GetEventosPartidoQueryImpl(
     GetEventosPartidoQuery.Companion.operationName,
     GetEventosPartidoQuery.Companion.dataDeserializer,
     GetEventosPartidoQuery.Companion.variablesSerializer,
+  )
+
+
+private class GetInscripcionesAdminQueryImpl(
+  connector: DefaultConnector
+):
+  GetInscripcionesAdminQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetInscripcionesAdminQuery.Data,
+      Unit
+  >(
+    connector,
+    GetInscripcionesAdminQuery.Companion.operationName,
+    GetInscripcionesAdminQuery.Companion.dataDeserializer,
+    GetInscripcionesAdminQuery.Companion.variablesSerializer,
+  )
+
+
+private class GetInscripcionesPropiasQueryImpl(
+  connector: DefaultConnector
+):
+  GetInscripcionesPropiasQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetInscripcionesPropiasQuery.Data,
+      Unit
+  >(
+    connector,
+    GetInscripcionesPropiasQuery.Companion.operationName,
+    GetInscripcionesPropiasQuery.Companion.dataDeserializer,
+    GetInscripcionesPropiasQuery.Companion.variablesSerializer,
   )
 
 
@@ -810,6 +1021,51 @@ private class GetPartidosQueryImpl(
   )
 
 
+private class GetSolicitudesAdminQueryImpl(
+  connector: DefaultConnector
+):
+  GetSolicitudesAdminQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetSolicitudesAdminQuery.Data,
+      Unit
+  >(
+    connector,
+    GetSolicitudesAdminQuery.Companion.operationName,
+    GetSolicitudesAdminQuery.Companion.dataDeserializer,
+    GetSolicitudesAdminQuery.Companion.variablesSerializer,
+  )
+
+
+private class GetSolicitudesPropiasQueryImpl(
+  connector: DefaultConnector
+):
+  GetSolicitudesPropiasQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetSolicitudesPropiasQuery.Data,
+      Unit
+  >(
+    connector,
+    GetSolicitudesPropiasQuery.Companion.operationName,
+    GetSolicitudesPropiasQuery.Companion.dataDeserializer,
+    GetSolicitudesPropiasQuery.Companion.variablesSerializer,
+  )
+
+
+private class GetTiposPerfilQueryImpl(
+  connector: DefaultConnector
+):
+  GetTiposPerfilQuery,
+  DefaultConnectorGeneratedQueryImpl<
+      GetTiposPerfilQuery.Data,
+      Unit
+  >(
+    connector,
+    GetTiposPerfilQuery.Companion.operationName,
+    GetTiposPerfilQuery.Companion.dataDeserializer,
+    GetTiposPerfilQuery.Companion.variablesSerializer,
+  )
+
+
 private class UpdateDeporteMutationImpl(
   connector: DefaultConnector
 ):
@@ -855,6 +1111,21 @@ private class UpdateEventoMutationImpl(
   )
 
 
+private class UpdateInscripcionMutationImpl(
+  connector: DefaultConnector
+):
+  UpdateInscripcionMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      UpdateInscripcionMutation.Data,
+      UpdateInscripcionMutation.Variables
+  >(
+    connector,
+    UpdateInscripcionMutation.Companion.operationName,
+    UpdateInscripcionMutation.Companion.dataDeserializer,
+    UpdateInscripcionMutation.Companion.variablesSerializer,
+  )
+
+
 private class UpdateInstitucionMutationImpl(
   connector: DefaultConnector
 ):
@@ -897,6 +1168,21 @@ private class UpdatePartidoMutationImpl(
     UpdatePartidoMutation.Companion.operationName,
     UpdatePartidoMutation.Companion.dataDeserializer,
     UpdatePartidoMutation.Companion.variablesSerializer,
+  )
+
+
+private class UpdateSolicitudMutationImpl(
+  connector: DefaultConnector
+):
+  UpdateSolicitudMutation,
+  DefaultConnectorGeneratedMutationImpl<
+      UpdateSolicitudMutation.Data,
+      UpdateSolicitudMutation.Variables
+  >(
+    connector,
+    UpdateSolicitudMutation.Companion.operationName,
+    UpdateSolicitudMutation.Companion.dataDeserializer,
+    UpdateSolicitudMutation.Companion.variablesSerializer,
   )
 
 

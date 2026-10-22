@@ -80,9 +80,9 @@ val connector: DefaultConnector = DefaultConnector.getInstance(
 ### DefaultConnector - Query and Mutation Properties
 
 The `default` Data Connect connector defines
-14 queries and
-18 mutations,
-a total of 32 operations.
+21 queries and
+24 mutations,
+a total of 45 operations.
 Each of these operations is exposed
 as a property of [DefaultConnector].
 
@@ -240,13 +240,13 @@ last argument of the `execute()` method.
 If a mutation has _required_ variables then they must be specified as
 arguments to the `execute()` method.
 
-For example, the "UpdatePartido" mutation has 7 required variables ("id", "eventoId", "equipoLocalId", "equipoVisitanteId", "fecha", "hora", and "estadoId")
+For example, the "UpdatePartido" mutation has 8 required variables ("id", "eventoId", "deporteId", "equipoLocalId", "equipoVisitanteId", "fecha", "hora", and "estadoId")
 and can be executed via the [DefaultConnector.updatePartido]
 property as follows:
 
 ```kotlin
 val connector = DefaultConnector.instance
-val mutationResult = connector.updatePartido.execute(id=java.util.UUID.randomUUID(), eventoId=java.util.UUID.randomUUID(), equipoLocalId=java.util.UUID.randomUUID(), equipoVisitanteId=java.util.UUID.randomUUID(), fecha=LocalDate(1843, 8, 21), hora="thud", estadoId=java.util.UUID.randomUUID())
+val mutationResult = connector.updatePartido.execute(id=java.util.UUID.randomUUID(), eventoId=java.util.UUID.randomUUID(), deporteId=java.util.UUID.randomUUID(), equipoLocalId=java.util.UUID.randomUUID(), equipoVisitanteId=java.util.UUID.randomUUID(), fecha=LocalDate(1843, 8, 21), hora="thud", estadoId=java.util.UUID.randomUUID())
 println("UpdatePartido mutation returned: ${mutationResult.data}")
 ```
 
@@ -259,16 +259,18 @@ however, if they _are_ specified,
 then they are specified in a Kotlin DSL block as the last argument
 of the `execute()` method.
 
-For example, the "CreateInstitucion" mutation has 2 optional variables ("logo" and "descripcion")
-and can be executed via the [DefaultConnector.createInstitucion]
+For example, the "CreateSolicitud" mutation has 4 optional variables ("institucionId", "equipoId", "nombreDeportivo", and "fotoDeportiva")
+and can be executed via the [DefaultConnector.createSolicitud]
 property as follows:
 
 ```kotlin
 val connector = DefaultConnector.instance
-val mutationResult = connector.createInstitucion.execute(nombre="corge") {
-  logo = "grault"
-  descripcion = "corge"
+val mutationResult = connector.createSolicitud.execute(deporteId=java.util.UUID.randomUUID(), tipoPerfilId=java.util.UUID.randomUUID(), fechaSolicitud=LocalDate(1969, 6, 2)) {
+  institucionId = java.util.UUID.randomUUID()
+  equipoId = java.util.UUID.randomUUID()
+  nombreDeportivo = "quux"
+  fotoDeportiva = "quux"
 }
-println("CreateInstitucion mutation returned: ${mutationResult.data}")
+println("CreateSolicitud mutation returned: ${mutationResult.data}")
 ```
 

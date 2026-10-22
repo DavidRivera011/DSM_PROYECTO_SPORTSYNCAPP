@@ -327,10 +327,9 @@ mutation DeleteEvento($id: UUID!)
   eventos_delete(key: { id: $id })
 }
 
-
-# Crear partido: solo Administrador
 mutation CreatePartido(
   $eventoId: UUID!
+  $deporteId: UUID!
   $equipoLocalId: UUID!
   $equipoVisitanteId: UUID!
   $fecha: Date!
@@ -350,6 +349,7 @@ mutation CreatePartido(
 
   partidos_insert(data: {
     eventoId: $eventoId
+    deporteId: $deporteId
     equipoLocalId: $equipoLocalId
     equipoVisitanteId: $equipoVisitanteId
     fecha: $fecha
@@ -362,6 +362,7 @@ mutation CreatePartido(
 mutation UpdatePartido(
   $id: UUID!
   $eventoId: UUID!
+  $deporteId: UUID!
   $equipoLocalId: UUID!
   $equipoVisitanteId: UUID!
   $fecha: Date!
@@ -383,6 +384,7 @@ mutation UpdatePartido(
     key: { id: $id }
     data: {
       eventoId: $eventoId
+      deporteId: $deporteId
       equipoLocalId: $equipoLocalId
       equipoVisitanteId: $equipoVisitanteId
       fecha: $fecha
@@ -436,4 +438,158 @@ mutation DeletePartido(
   }
 
   partidos_delete(key: { id: $id })
+}
+
+
+mutation CreateSolicitud(
+  $deporteId: UUID!
+  $tipoPerfilId: UUID!
+  $institucionId: UUID
+  $equipoId: UUID
+  $nombreDeportivo: String
+  $fotoDeportiva: String
+  $fechaSolicitud: Date!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      id
+    }
+
+    estadosSolicitudes(
+      id: "d14add7180dd47d791745c1ece5acfdc"
+    ) {
+      nombreEstado @check(
+        expr: "this == 'Pendiente'"
+        message: "El estado inicial de la solicitud debe ser Pendiente."
+      )
+    }
+  }
+
+  solicitudes_insert(data: {
+    usuarioId_expr: "auth.uid"
+    deporteId: $deporteId
+    tipoPerfilId: $tipoPerfilId
+    institucionId: $institucionId
+    equipoId: $equipoId
+    nombreDeportivo: $nombreDeportivo
+    fotoDeportiva: $fotoDeportiva
+    fechaSolicitud: $fechaSolicitud
+    estadoId: "d14add7180dd47d791745c1ece5acfdc"
+  })
+}
+
+
+mutation UpdateSolicitud(
+  $id: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede revisar solicitudes."
+        )
+      }
+    }
+  }
+
+  solicitudes_update(
+    key: { id: $id }
+    data: {
+      estadoId: $estadoId
+      usuarioRevisorId_expr: "auth.uid"
+    }
+  )
+}
+
+mutation DeleteSolicitud(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar solicitudes."
+        )
+      }
+    }
+  }
+
+  solicitudes_delete(key: { id: $id })
+}
+
+
+mutation CreateInscripcion(
+  $eventoId: UUID!
+  $equipoId: UUID
+  $perfilId: UUID
+  $fechaInscripcion: Date!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      id
+    }
+
+    estadosInscripciones(id: $estadoId) {
+      nombreEstado @check(
+        expr: "this == 'Pendiente'"
+        message: "Una inscripción nueva debe tener el estado Pendiente."
+      )
+    }
+  }
+
+  inscripciones_insert(data: {
+    eventoId: $eventoId
+    equipoId: $equipoId
+    perfilId: $perfilId
+    usuarioSolicitanteId_expr: "auth.uid"
+    fechaInscripcion: $fechaInscripcion
+    estadoId: $estadoId
+  })
+}
+
+
+mutation UpdateInscripcion(
+  $id: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede revisar inscripciones."
+        )
+      }
+    }
+  }
+
+  inscripciones_update(
+    key: { id: $id }
+    data: {
+      estadoId: $estadoId
+      usuarioRevisorId_expr: "auth.uid"
+    }
+  )
+}
+
+
+mutation DeleteInscripcion(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar inscripciones."
+        )
+      }
+    }
+  }
+
+  inscripciones_delete(key: { id: $id })
 }

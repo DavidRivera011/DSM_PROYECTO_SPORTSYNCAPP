@@ -26,13 +26,21 @@ import com.example.sportsyncapp.ui.adapters.PartidosAdapter
 import com.google.firebase.dataconnect.LocalDate
 import java.util.Calendar
 import java.util.UUID
+import com.example.sportsyncapp.data.model.Deporte
+import com.example.sportsyncapp.data.repository.DeporteRepository
+import com.example.sportsyncapp.ui.adapters.FiltroDeporte
+import com.example.sportsyncapp.ui.adapters.FiltrosDeportesAdapter
+import androidx.recyclerview.widget.RecyclerView
 
 class PartidosFragment : Fragment() {
 
     private var _binding: FragmentPartidosBinding? = null
     private val binding get() = _binding!!
-
     private val repository = PartidosRepository()
+    private val deporteRepository = DeporteRepository()
+    private lateinit var filtrosAdapter: FiltrosDeportesAdapter
+    private var todosLosPartidos: List<Partido> = emptyList()
+    private var deporteSeleccionadoId: String? = null
 
     private lateinit var adapter: PartidosAdapter
     private var esAdministrador = false
@@ -54,6 +62,8 @@ class PartidosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         configurarLista()
+        configurarFiltrosDeportes()
+        cargarFiltrosDeportes()
 
         binding.swipeRefreshMatches.setOnRefreshListener {
             cargarPartidos()
@@ -112,10 +122,8 @@ class PartidosFragment : Fragment() {
             binding.swipeRefreshMatches.isRefreshing = false
 
             if (resultado != null) {
-                adapter.actualizarLista(resultado)
-
-                binding.tvMatchesEmpty.visibility =
-                    if (resultado.isEmpty()) View.VISIBLE else View.GONE
+                todosLosPartidos = resultado
+                aplicarFiltroPartidos()
             } else {
                 binding.tvMatchesEmpty.visibility = View.VISIBLE
 
@@ -172,6 +180,78 @@ class PartidosFragment : Fragment() {
             }
         }
     }
+
+
+    private fun configurarFiltrosDeportes() {
+        filtrosAdapter = FiltrosDeportesAdapter(
+            filtros = listOf(FiltroDeporte(null, "Todos")),
+            seleccionadoId = null
+        ) { filtro ->
+            deporteSeleccionadoId = filtro.id
+            filtrosAdapter.actualizar(
+                obtenerFiltrosActuales(),
+                deporteSeleccionadoId
+            )
+            aplicarFiltroPartidos()
+        }
+
+        binding.rvFiltrosDeportes.layoutManager = LinearLayoutManager(
+            requireContext(),
+            RecyclerView.HORIZONTAL,
+            false
+        )
+
+        binding.rvFiltrosDeportes.adapter = filtrosAdapter
+    }
+
+    private var deportesDisponibles: List<Deporte> = emptyList()
+
+    private fun obtenerFiltrosActuales(): List<FiltroDeporte> {
+        return listOf(FiltroDeporte(null, "Todos")) +
+                deportesDisponibles.map {
+                    FiltroDeporte(
+                        id = it.id.toString(),
+                        nombre = it.nombreDeporte
+                    )
+                }
+    }
+
+    private fun cargarFiltrosDeportes() {
+        deporteRepository.obtenerDeportes { resultado ->
+            if (_binding == null) return@obtenerDeportes
+
+            if (resultado == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "No se pudieron cargar los filtros de deportes.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@obtenerDeportes
+            }
+
+            deportesDisponibles = resultado
+            filtrosAdapter.actualizar(
+                obtenerFiltrosActuales(),
+                deporteSeleccionadoId
+            )
+        }
+    }
+
+    private fun aplicarFiltroPartidos() {
+        val partidosFiltrados = if (deporteSeleccionadoId == null) {
+            todosLosPartidos
+        } else {
+            todosLosPartidos.filter {
+                it.deporteId == deporteSeleccionadoId
+            }
+        }
+
+        adapter.actualizarLista(partidosFiltrados)
+
+        binding.tvMatchesEmpty.visibility =
+            if (partidosFiltrados.isEmpty()) View.VISIBLE else View.GONE
+    }
+
 
     private fun mostrarDialogoPartido(
         partido: Partido?,
@@ -358,6 +438,17 @@ class PartidosFragment : Fragment() {
                 val visitanteSel = equipos[idxVisitante]
                 val estadoSel = estados[idxEstado]
 
+                val deporteUUID = try {
+                    UUID.fromString(eventoSel.deporteId)
+                } catch (_: Exception) {
+                    Toast.makeText(
+                        contexto,
+                        "El evento seleccionado no tiene un deporte válido.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+
                 val fechaFirebase = LocalDate(
                     fechaYear,
                     fechaMonth,
@@ -391,6 +482,7 @@ class PartidosFragment : Fragment() {
                 if (partido == null) {
                     repository.crearPartido(
                         eventoId = eventoSel.id,
+                        deporteId = deporteUUID,
                         equipoLocalId = localSel.id,
                         equipoVisitanteId = visitanteSel.id,
                         fecha = fechaFirebase,
@@ -410,6 +502,7 @@ class PartidosFragment : Fragment() {
                     repository.actualizarPartido(
                         id = partidoUUID,
                         eventoId = eventoSel.id,
+                        deporteId = deporteUUID,
                         equipoLocalId = localSel.id,
                         equipoVisitanteId = visitanteSel.id,
                         fecha = fechaFirebase,
@@ -420,7 +513,6 @@ class PartidosFragment : Fragment() {
                 }
             }
         }
-
         dialogo.show()
     }
 
