@@ -13,7 +13,7 @@ mutation CreateUsuario(
   $apellido: String!
   $correo: String!
   $fechaNacimiento: Date!
-  $rolId: UUID!
+  $rolId: UUID @retired(reason: "El rol se asigna automáticamente")
   $fotoPerfil: String
 ) @auth(level: USER) {
   usuarios_insert(data: {
@@ -22,7 +22,574 @@ mutation CreateUsuario(
     apellido: $apellido
     correo: $correo
     fechaNacimiento: $fechaNacimiento
-    rolId: $rolId
+    rolId: "550e8400e29b41d4a716446655440001"
     fotoPerfil: $fotoPerfil
   })
+}
+
+
+# Crear un deporte: solo Administrador
+mutation CreateDeporte(
+  $nombreDeporte: String!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede crear deportes."
+        )
+      }
+    }
+  }
+
+  deportes_insert(data: {
+    nombreDeporte: $nombreDeporte
+  })
+}
+
+# Actualizar un deporte: solo Administrador
+mutation UpdateDeporte(
+  $id: UUID!
+  $nombreDeporte: String!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede editar deportes."
+        )
+      }
+    }
+  }
+
+  deportes_update(
+    key: { id: $id }
+    data: {
+      nombreDeporte: $nombreDeporte
+    }
+  )
+}
+
+# Eliminar un deporte: solo Administrador
+mutation DeleteDeporte(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar deportes."
+        )
+      }
+    }
+  }
+
+  deportes_delete(key: { id: $id })
+}
+
+# Actualizar los datos personales del usuario autenticado.
+# El usuario solo puede modificar su propio registro.
+# No permite cambiar el correo, rol, UID ni foto de perfil.
+
+mutation UpdateUsuario(
+  $nombre: String!
+  $apellido: String!
+  $fechaNacimiento: Date!
+) @auth(level: USER) {
+  usuarios_update(
+    key: { id_expr: "auth.uid" }
+    data: {
+      nombre: $nombre
+      apellido: $apellido
+      fechaNacimiento: $fechaNacimiento
+    }
+  )
+}
+
+
+mutation CreateInstitucion(
+  $nombre: String!
+  $logo: String
+  $descripcion: String
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede crear instituciones."
+        )
+      }
+    }
+  }
+  instituciones_insert(
+    data: {
+      nombre: $nombre
+      logo: $logo
+      descripcion: $descripcion
+    }
+  )
+}
+
+mutation UpdateInstitucion(
+  $id: UUID!
+  $nombre: String!
+  $logo: String
+  $descripcion: String
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede editar instituciones."
+        )
+      }
+    }
+  }
+  instituciones_update(
+    key: { id: $id }
+    data: {
+      nombre: $nombre
+      logo: $logo
+      descripcion: $descripcion
+    }
+  )
+}
+
+# Eliminar una institución
+mutation DeleteInstitucion(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar instituciones."
+        )
+      }
+    }
+  }
+
+  instituciones_delete(key: { id: $id })
+}
+
+
+#Crear equipo
+mutation CreateEquipo(
+  $nombreEquipo: String!
+  $institucionId: UUID!
+  $deporteId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede crear equipos."
+        )
+      }
+    }
+  }
+  equipos_insert(
+    data: {
+      nombreEquipo: $nombreEquipo
+      institucionId: $institucionId
+      deporteId: $deporteId
+    }
+  )
+}
+
+#Editar equipo
+mutation UpdateEquipo(
+  $id: UUID!
+  $nombreEquipo: String!
+  $institucionId: UUID!
+  $deporteId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede editar equipos."
+        )
+      }
+    }
+  }
+  equipos_update(
+    key: { id: $id }
+    data: {
+      nombreEquipo: $nombreEquipo
+      institucionId: $institucionId
+      deporteId: $deporteId
+    }
+  )
+}
+
+#Eliminar equipo
+mutation DeleteEquipo($id: UUID!) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar equipos."
+        )
+      }
+    }
+  }
+  equipos_delete(key: { id: $id })
+}
+
+#Create Evento
+mutation CreateEvento(
+  $nombre: String!
+  $fecha: Date!
+  $deporteId: UUID!
+  $institucionId: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede crear eventos."
+        )
+      }
+    }
+  }
+
+  eventos_insert(
+    data: {
+      nombre: $nombre
+      fecha: $fecha
+      deporteId: $deporteId
+      institucionId: $institucionId
+      estadoId: $estadoId
+    }
+  )
+}
+
+
+#Update Evento
+mutation UpdateEvento(
+  $id: UUID!
+  $nombre: String!
+  $fecha: Date!
+  $deporteId: UUID!
+  $institucionId: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede actualizar eventos."
+        )
+      }
+    }
+  }
+
+  eventos_update(
+    key: { id: $id }
+    data: {
+      nombre: $nombre
+      fecha: $fecha
+      deporteId: $deporteId
+      institucionId: $institucionId
+      estadoId: $estadoId
+    }
+  )
+}
+
+
+#Delete Evento
+mutation DeleteEvento($id: UUID!)
+@auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar eventos."
+        )
+      }
+    }
+  }
+
+  eventos_delete(key: { id: $id })
+}
+
+mutation CreatePartido(
+  $eventoId: UUID!
+  $deporteId: UUID!
+  $equipoLocalId: UUID!
+  $equipoVisitanteId: UUID!
+  $fecha: Date!
+  $hora: String!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede crear partidos."
+        )
+      }
+    }
+  }
+
+  partidos_insert(data: {
+    eventoId: $eventoId
+    deporteId: $deporteId
+    equipoLocalId: $equipoLocalId
+    equipoVisitanteId: $equipoVisitanteId
+    fecha: $fecha
+    hora: $hora
+    estadoId: $estadoId
+  })
+}
+
+# Editar partido: solo Administrador
+mutation UpdatePartido(
+  $id: UUID!
+  $eventoId: UUID!
+  $deporteId: UUID!
+  $equipoLocalId: UUID!
+  $equipoVisitanteId: UUID!
+  $fecha: Date!
+  $hora: String!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede editar partidos."
+        )
+      }
+    }
+  }
+
+  partidos_update(
+    key: { id: $id }
+    data: {
+      eventoId: $eventoId
+      deporteId: $deporteId
+      equipoLocalId: $equipoLocalId
+      equipoVisitanteId: $equipoVisitanteId
+      fecha: $fecha
+      hora: $hora
+      estadoId: $estadoId
+    }
+  )
+}
+
+# Actualizar marcador y estado del partido: solo Administrador
+mutation UpdateMarcadorPartido(
+  $id: UUID!
+  $marcadorLocal: Int!
+  $marcadorVisitante: Int!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede actualizar marcadores."
+        )
+      }
+    }
+  }
+
+  partidos_update(
+    key: { id: $id }
+    data: {
+      marcadorLocal: $marcadorLocal
+      marcadorVisitante: $marcadorVisitante
+      estadoId: $estadoId
+    }
+  )
+}
+
+# Eliminar partido: solo Administrador
+mutation DeletePartido(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar partidos."
+        )
+      }
+    }
+  }
+
+  partidos_delete(key: { id: $id })
+}
+
+
+mutation CreateSolicitud(
+  $deporteId: UUID!
+  $tipoPerfilId: UUID!
+  $institucionId: UUID
+  $equipoId: UUID
+  $nombreDeportivo: String
+  $fotoDeportiva: String
+  $fechaSolicitud: Date!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      id
+    }
+
+    estadosSolicitudes(
+      id: "d14add7180dd47d791745c1ece5acfdc"
+    ) {
+      nombreEstado @check(
+        expr: "this == 'Pendiente'"
+        message: "El estado inicial de la solicitud debe ser Pendiente."
+      )
+    }
+  }
+
+  solicitudes_insert(data: {
+    usuarioId_expr: "auth.uid"
+    deporteId: $deporteId
+    tipoPerfilId: $tipoPerfilId
+    institucionId: $institucionId
+    equipoId: $equipoId
+    nombreDeportivo: $nombreDeportivo
+    fotoDeportiva: $fotoDeportiva
+    fechaSolicitud: $fechaSolicitud
+    estadoId: "d14add7180dd47d791745c1ece5acfdc"
+  })
+}
+
+
+mutation UpdateSolicitud(
+  $id: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede revisar solicitudes."
+        )
+      }
+    }
+  }
+
+  solicitudes_update(
+    key: { id: $id }
+    data: {
+      estadoId: $estadoId
+      usuarioRevisorId_expr: "auth.uid"
+    }
+  )
+}
+
+mutation DeleteSolicitud(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar solicitudes."
+        )
+      }
+    }
+  }
+
+  solicitudes_delete(key: { id: $id })
+}
+
+
+mutation CreateInscripcion(
+  $eventoId: UUID!
+  $equipoId: UUID
+  $perfilId: UUID
+  $fechaInscripcion: Date!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      id
+    }
+
+    estadosInscripciones(id: $estadoId) {
+      nombreEstado @check(
+        expr: "this == 'Pendiente'"
+        message: "Una inscripción nueva debe tener el estado Pendiente."
+      )
+    }
+  }
+
+  inscripciones_insert(data: {
+    eventoId: $eventoId
+    equipoId: $equipoId
+    perfilId: $perfilId
+    usuarioSolicitanteId_expr: "auth.uid"
+    fechaInscripcion: $fechaInscripcion
+    estadoId: $estadoId
+  })
+}
+
+
+mutation UpdateInscripcion(
+  $id: UUID!
+  $estadoId: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede revisar inscripciones."
+        )
+      }
+    }
+  }
+
+  inscripciones_update(
+    key: { id: $id }
+    data: {
+      estadoId: $estadoId
+      usuarioRevisorId_expr: "auth.uid"
+    }
+  )
+}
+
+
+mutation DeleteInscripcion(
+  $id: UUID!
+) @auth(level: USER) @transaction {
+  query @redact {
+    usuarios(id_expr: "auth.uid") {
+      rol {
+        nombreRol @check(
+          expr: "this == 'Administrador'"
+          message: "Solo un administrador puede eliminar inscripciones."
+        )
+      }
+    }
+  }
+
+  inscripciones_delete(key: { id: $id })
 }

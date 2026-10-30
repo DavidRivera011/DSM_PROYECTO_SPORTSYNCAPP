@@ -15,7 +15,7 @@
         android:theme="@style/Theme.SportSyncAPP">
         <!-- Splash que dicta si el usuario debe ir al main o al login -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.auth.SplashActivity"
             android:exported="true">
 
             <intent-filter>
@@ -32,12 +32,17 @@
 
         <!-- Pantalla principal -->
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SportSyncAPP" />
 
         <!-- Pantalla de registro -->
         <activity
             android:name=".RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.perfil.EditarPerfilActivity"
             android:exported="false" />
 
     </application>

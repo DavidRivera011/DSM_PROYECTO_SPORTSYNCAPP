@@ -15,11 +15,11 @@ type Usuarios @table {
 type Instituciones @table {
   nombre: String!
   logo: String
+  descripcion: String
 }
 
 type Deportes @table {
   nombreDeporte: String!
-  fotoDeporte: String!
 }
 
 type Equipos @table {
@@ -61,6 +61,7 @@ type Eventos @table {
 
 type Partidos @table {
   evento: Eventos
+  deporte: Deportes
   equipoLocal: Equipos
   equipoVisitante: Equipos
   marcadorLocal: Int @default(value: 0)
@@ -69,6 +70,7 @@ type Partidos @table {
   hora: String
   estado: EstadosPartidos
 }
+
 
 type ParticipantesPartido @table {
   partido: Partidos!
@@ -88,4 +90,22 @@ type Inscripciones @table {
   usuarioRevisor: Usuarios
   fechaInscripcion: Date!
   estado: EstadosInscripciones!
+}
+
+
+type EstadosSolicitudes @table {
+  nombreEstado: String!
+}
+
+type Solicitudes @table {
+  usuario: Usuarios!
+  deporte: Deportes!
+  tipoPerfil: TipoPerfil!
+  institucion: Instituciones
+  equipo: Equipos
+  nombreDeportivo: String
+  fotoDeportiva: String
+  fechaSolicitud: Date!
+  estado: EstadosSolicitudes!
+  usuarioRevisor: Usuarios
 }

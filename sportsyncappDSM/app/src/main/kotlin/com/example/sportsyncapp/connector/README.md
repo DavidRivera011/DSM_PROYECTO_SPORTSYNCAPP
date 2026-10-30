@@ -80,9 +80,9 @@ val connector: DefaultConnector = DefaultConnector.getInstance(
 ### DefaultConnector - Query and Mutation Properties
 
 The `default` Data Connect connector defines
-1 queries and
-1 mutations,
-a total of 2 operations.
+21 queries and
+24 mutations,
+a total of 45 operations.
 Each of these operations is exposed
 as a property of [DefaultConnector].
 
@@ -93,8 +93,8 @@ which can be accessed via the [DefaultConnector.getCurrentUsuario] property.
 
 
 An example of the property for a mutation
-is the mutation named "CreateUsuario",
-which can be accessed via the [DefaultConnector.createUsuario] property.
+is the mutation named "CreateDeporte",
+which can be accessed via the [DefaultConnector.createDeporte] property.
 
 
 ### DefaultConnector - The `dataConnect` Property
@@ -167,7 +167,37 @@ _Optional_ variables are specified in a Kotlin DSL block as the
 last argument of the `execute()` method.
 
 
+### Executing Queries with No Variables
 
+If a query has no variables then it can be easily executed
+by calling the `execute()` method with no arguments.
+
+For example, the "GetDeportes" query has no variables
+and can be executed via the
+[DefaultConnector.getDeportes]
+property as follows:
+
+```kotlin
+val connector = DefaultConnector.instance
+val queryResult = connector.getDeportes.execute()
+println("GetDeportes query returned: ${queryResult.data}")
+```
+
+
+### Executing Queries with Required Variables
+
+If a query has _required_ variables then they must be specified as
+arguments to the `execute()` method.
+
+For example, the "GetEventoPorId" query has 1 required variable ("id")
+and can be executed via the [DefaultConnector.getEventoPorId]
+property as follows:
+
+```kotlin
+val connector = DefaultConnector.instance
+val queryResult = connector.getEventoPorId.execute(id=java.util.UUID.randomUUID())
+println("GetEventoPorId query returned: ${queryResult.data}")
+```
 
 
 ### Executing Queries with Optional Variables
@@ -210,14 +240,14 @@ last argument of the `execute()` method.
 If a mutation has _required_ variables then they must be specified as
 arguments to the `execute()` method.
 
-For example, the "CreateUsuario" mutation has 5 required variables ("nombre", "apellido", "correo", "fechaNacimiento", and "rolId")
-and can be executed via the [DefaultConnector.createUsuario]
+For example, the "UpdatePartido" mutation has 8 required variables ("id", "eventoId", "deporteId", "equipoLocalId", "equipoVisitanteId", "fecha", "hora", and "estadoId")
+and can be executed via the [DefaultConnector.updatePartido]
 property as follows:
 
 ```kotlin
 val connector = DefaultConnector.instance
-val mutationResult = connector.createUsuario.execute(nombre="corge", apellido="quux", correo="foo", fechaNacimiento=LocalDate(1664, 1, 14), rolId=java.util.UUID.randomUUID())
-println("CreateUsuario mutation returned: ${mutationResult.data}")
+val mutationResult = connector.updatePartido.execute(id=java.util.UUID.randomUUID(), eventoId=java.util.UUID.randomUUID(), deporteId=java.util.UUID.randomUUID(), equipoLocalId=java.util.UUID.randomUUID(), equipoVisitanteId=java.util.UUID.randomUUID(), fecha=LocalDate(1843, 8, 21), hora="thud", estadoId=java.util.UUID.randomUUID())
+println("UpdatePartido mutation returned: ${mutationResult.data}")
 ```
 
 
@@ -229,15 +259,18 @@ however, if they _are_ specified,
 then they are specified in a Kotlin DSL block as the last argument
 of the `execute()` method.
 
-For example, the "CreateUsuario" mutation has 1 optional variable ("fotoPerfil")
-and can be executed via the [DefaultConnector.createUsuario]
+For example, the "CreateSolicitud" mutation has 4 optional variables ("institucionId", "equipoId", "nombreDeportivo", and "fotoDeportiva")
+and can be executed via the [DefaultConnector.createSolicitud]
 property as follows:
 
 ```kotlin
 val connector = DefaultConnector.instance
-val mutationResult = connector.createUsuario.execute(nombre="corge", apellido="quux", correo="foo", fechaNacimiento=LocalDate(1664, 1, 14), rolId=java.util.UUID.randomUUID()) {
-  fotoPerfil = "thud"
+val mutationResult = connector.createSolicitud.execute(deporteId=java.util.UUID.randomUUID(), tipoPerfilId=java.util.UUID.randomUUID(), fechaSolicitud=LocalDate(1969, 6, 2)) {
+  institucionId = java.util.UUID.randomUUID()
+  equipoId = java.util.UUID.randomUUID()
+  nombreDeportivo = "quux"
+  fotoDeportiva = "quux"
 }
-println("CreateUsuario mutation returned: ${mutationResult.data}")
+println("CreateSolicitud mutation returned: ${mutationResult.data}")
 ```
 

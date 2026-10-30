@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_nav_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/nav_registros"
+        android:icon="@drawable/ic_partidos"
+        android:title="@string/registros" />
+    <item
+        android:id="@+id/nav_evento"
+        android:icon="@drawable/ic_nav_agenda"
+        android:title="@string/nav_eventos" />
+    <item
+        android:id="@+id/nav_partidos"
+        android:icon="@drawable/ic_partidos"
+        android:title="@string/nav_partidos" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_nav_profile"
+        android:title="@string/nav_perfil" />
+</menu>
