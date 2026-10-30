@@ -14,6 +14,8 @@ import com.example.sportsyncapp.LoginActivity
 import com.example.sportsyncapp.R
 import com.example.sportsyncapp.data.repository.UsuarioRepository
 import com.example.sportsyncapp.databinding.FragmentPerfilBinding
+import com.example.sportsyncapp.ui.main.MainActivity
+import com.example.sportsyncapp.ui.solicitudes.SolicitudesFragment
 import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -57,6 +59,14 @@ class PerfilFragment : Fragment() {
             startActivity(intent)
         }
 
+        // Abrir mis solicitudes
+        binding.btnSolicitudes.setOnClickListener {
+            (activity as? MainActivity)?.abrirPantallaSecundaria(
+                SolicitudesFragment(),
+                "solicitudes"
+            )
+        }
+
         cargarPerfil()
     }
 
@@ -98,6 +108,14 @@ class PerfilFragment : Fragment() {
 
                 else -> "FAN"
             }
+
+            // Mostrar Mis solicitudes únicamente a usuarios normales
+            bindingActual.btnSolicitudes.visibility =
+                if (rol == "Administrador") {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
 
             // Nombre completo
             val nombreCompleto =

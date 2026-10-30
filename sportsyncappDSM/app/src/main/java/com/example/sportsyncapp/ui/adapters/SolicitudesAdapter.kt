@@ -88,10 +88,30 @@ class SolicitudesAdapter(
         }
 
         holder.tvFecha.text =
-            "Fecha de solicitud: ${solicitud.fechaSolicitud}"
+            "Fecha de solicitud: ${formatearFecha(solicitud.fechaSolicitud)}"
 
         holder.tvEstado.text =
             "Estado: ${solicitud.estadoNombre}"
+    }
+
+    private fun formatearFecha(fecha: Any?): String {
+        if (fecha == null) return "Sin fecha"
+
+        val patron = Regex(
+            """LocalDate\(year=(\d+), month=(\d+), day=(\d+)\)"""
+        )
+
+        val resultado = patron.find(fecha.toString())
+
+        return if (resultado != null) {
+            val anio = resultado.groupValues[1]
+            val mes = resultado.groupValues[2].padStart(2, '0')
+            val dia = resultado.groupValues[3].padStart(2, '0')
+
+            "$dia/$mes/$anio"
+        } else {
+            fecha.toString()
+        }
     }
 
     override fun getItemCount(): Int = solicitudes.size

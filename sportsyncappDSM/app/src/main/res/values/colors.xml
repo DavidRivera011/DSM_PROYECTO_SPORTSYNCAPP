@@ -11,6 +11,7 @@
     <color name="boton_naranja_claro">#FFB270</color>
     <color name="texto_blanco">#FFFFFF</color>
     <color name="texto_negro">#1A1A1A</color>
+    <color name="sportsync_orange">#FF8A3D</color>
 
 
     <color name="sportsync_bg">#F7EEE4</color>
@@ -26,6 +27,7 @@
     <color name="sportsync_nav_bg">#4B2217</color>
     <color name="sportsync_nav_selected">#F3B38B</color>
     <color name="sportsync_nav_unselected">#CDB4AA</color>
+    <color name="sportsync_surface">#FFFFFF</color>
 
     <!-- Status Badges -->
     <color name="status_pending">#E08E1A</color>

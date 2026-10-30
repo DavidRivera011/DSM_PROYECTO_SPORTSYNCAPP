@@ -6,15 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sportsyncapp.R
 import com.example.sportsyncapp.data.model.Solicitud
 import com.example.sportsyncapp.data.repository.SolicitudRepository
 import com.example.sportsyncapp.databinding.FragmentSolicitudesBinding
 import com.example.sportsyncapp.ui.adapters.SolicitudesAdapter
+import com.google.android.material.button.MaterialButton
 import java.util.UUID
+import android.util.Log
 
 class SolicitudesFragment : Fragment() {
 
@@ -24,13 +30,22 @@ class SolicitudesFragment : Fragment() {
     private val repository = SolicitudRepository()
     private lateinit var adapter: SolicitudesAdapter
 
+    // Catálogos
+    private var todosLosDeportes: List<Pair<UUID, String>> = emptyList()
     private var deportes: List<Pair<UUID, String>> = emptyList()
     private var tiposPerfil: List<Pair<UUID, String>> = emptyList()
     private var instituciones: List<Pair<UUID, String>> = emptyList()
     private var equipos: List<Pair<UUID, String>> = emptyList()
 
+    // Solicitudes del usuario
+    private var solicitudesActuales: List<Solicitud> = emptyList()
+    private var deportesAprobadosIds: Set<UUID> = emptySet()
+
+    // Estado de carga
     private var catalogosCargados = 0
     private var catalogosConError = false
+    private var catalogosListos = false
+    private var solicitudesCargadas = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +60,10 @@ class SolicitudesFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = SolicitudesAdapter(emptyList())
@@ -55,44 +73,93 @@ class SolicitudesFragment : Fragment() {
 
         binding.rvSolicitudes.adapter = adapter
 
+        binding.btnNuevaSolicitud.visibility = View.GONE
+
         binding.swipeRefreshSolicitudes.setOnRefreshListener {
             cargarSolicitudes()
         }
 
-        binding.btnCrearSolicitud.setOnClickListener {
-            enviarSolicitud()
+        binding.btnNuevaSolicitud.setOnClickListener {
+            mostrarDialogoNuevaSolicitud()
         }
 
         cargarSolicitudes()
         cargarCatalogos()
     }
 
-    private fun cargarSolicitudes() {
-        val bindingActual = _binding ?: return
+    // ----------------------------------------------------
+    // CARGAR SOLICITUDES DEL USUARIO
+    // ----------------------------------------------------
 
-        bindingActual.swipeRefreshSolicitudes.isRefreshing = true
-        bindingActual.tvSolicitudesVacio.visibility = View.GONE
+    private fun cargarSolicitudes() {
+        val vista = _binding ?: return
+
+        solicitudesCargadas = false
+
+        vista.progressSolicitudes.visibility = View.VISIBLE
+        vista.rvSolicitudes.visibility = View.GONE
+        vista.tvSolicitudesVacio.visibility = View.GONE
+        vista.btnNuevaSolicitud.visibility = View.GONE
 
         repository.obtenerSolicitudes { resultado ->
-            val vista = _binding ?: return@obtenerSolicitudes
 
-            vista.swipeRefreshSolicitudes.isRefreshing = false
+            val vistaActual = _binding ?: return@obtenerSolicitudes
+
+            vistaActual.progressSolicitudes.visibility = View.GONE
+            vistaActual.swipeRefreshSolicitudes.isRefreshing = false
 
             if (resultado != null) {
+
+                solicitudesActuales = resultado
+                solicitudesCargadas = true
+
                 adapter.actualizarLista(resultado)
 
-                vista.tvSolicitudesVacio.text =
+                // Identificar los deportes que ya fueron aprobados.
+                deportesAprobadosIds = resultado
+                    .filter {
+                        it.estadoNombre.equals(
+                            "Aprobada",
+                            ignoreCase = true
+                        )
+                    }
+                    .map { it.deporteId }
+                    .toSet()
+
+                // Actualizar los deportes disponibles.
+                actualizarDeportesDisponibles()
+
+                vistaActual.rvSolicitudes.visibility =
+                    if (resultado.isNotEmpty()) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                vistaActual.tvSolicitudesVacio.text =
                     "No tienes solicitudes registradas."
 
-                vista.tvSolicitudesVacio.visibility =
-                    if (resultado.isEmpty()) View.VISIBLE else View.GONE
+                vistaActual.tvSolicitudesVacio.visibility =
+                    if (resultado.isEmpty()) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                // Actualizar la visibilidad del botón.
+                actualizarVisibilidadBoton()
+
             } else {
-                adapter.actualizarLista(emptyList())
 
-                vista.tvSolicitudesVacio.text =
-                    "No se pudieron cargar las solicitudes."
+                solicitudesCargadas = false
 
-                vista.tvSolicitudesVacio.visibility = View.VISIBLE
+                vistaActual.btnNuevaSolicitud.visibility = View.GONE
+                vistaActual.rvSolicitudes.visibility = View.GONE
+
+                vistaActual.tvSolicitudesVacio.text =
+                    "No se pudieron cargar tus solicitudes. Intenta nuevamente."
+
+                vistaActual.tvSolicitudesVacio.visibility = View.VISIBLE
 
                 Toast.makeText(
                     requireContext(),
@@ -103,9 +170,15 @@ class SolicitudesFragment : Fragment() {
         }
     }
 
+    // ----------------------------------------------------
+    // CARGAR CATÁLOGOS
+    // ----------------------------------------------------
+
     private fun cargarCatalogos() {
+
         catalogosCargados = 0
         catalogosConError = false
+        catalogosListos = false
 
         repository.obtenerDeportes { resultado ->
             if (_binding == null) return@obtenerDeportes
@@ -113,11 +186,8 @@ class SolicitudesFragment : Fragment() {
             if (resultado == null) {
                 catalogosConError = true
             } else {
-                deportes = resultado
-                configurarSpinner(
-                    binding.spDeportesSolicitud,
-                    listOf("Selecciona un deporte") + deportes.map { it.second }
-                )
+                todosLosDeportes = resultado
+                actualizarDeportesDisponibles()
             }
 
             catalogoCargado()
@@ -130,11 +200,6 @@ class SolicitudesFragment : Fragment() {
                 catalogosConError = true
             } else {
                 tiposPerfil = resultado
-                configurarSpinner(
-                    binding.spTipoPerfilSolicitud,
-                    listOf("Selecciona un tipo de perfil") +
-                            tiposPerfil.map { it.second }
-                )
             }
 
             catalogoCargado()
@@ -147,12 +212,6 @@ class SolicitudesFragment : Fragment() {
                 catalogosConError = true
             } else {
                 instituciones = resultado
-
-                configurarSpinner(
-                    binding.spInstitucionSolicitud,
-                    listOf("Sin institución") +
-                            instituciones.map { it.second }
-                )
             }
 
             catalogoCargado()
@@ -165,11 +224,6 @@ class SolicitudesFragment : Fragment() {
                 catalogosConError = true
             } else {
                 equipos = resultado
-
-                configurarSpinner(
-                    binding.spEquipoSolicitud,
-                    listOf("Sin equipo") + equipos.map { it.second }
-                )
             }
 
             catalogoCargado()
@@ -179,17 +233,74 @@ class SolicitudesFragment : Fragment() {
     private fun catalogoCargado() {
         catalogosCargados++
 
-        if (catalogosCargados == 4 && catalogosConError) {
-            Toast.makeText(
-                requireContext(),
-                "No se pudieron cargar todos los catálogos.",
-                Toast.LENGTH_LONG
-            ).show()
+        if (catalogosCargados == 4) {
+
+            catalogosListos = !catalogosConError
+
+            if (catalogosConError) {
+                Toast.makeText(
+                    requireContext(),
+                    "No se pudieron cargar todos los catálogos.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            actualizarVisibilidadBoton()
         }
     }
 
+    // ----------------------------------------------------
+    // FILTRAR DEPORTES YA APROBADOS
+    // ----------------------------------------------------
+
+    private fun actualizarDeportesDisponibles() {
+
+        deportes = todosLosDeportes.filter { deporte ->
+            deporte.first !in deportesAprobadosIds
+        }
+
+        actualizarVisibilidadBoton()
+    }
+
+    // ----------------------------------------------------
+    // CONTROLAR VISIBILIDAD DEL BOTÓN
+    // ----------------------------------------------------
+
+    private fun actualizarVisibilidadBoton() {
+        val vista = _binding ?: return
+
+        val tienePendiente = solicitudesActuales.any {
+            it.estadoNombre.equals("Pendiente", ignoreCase = true)
+        }
+
+        val puedeCrearSolicitud =
+            solicitudesCargadas &&
+                    catalogosListos &&
+                    !catalogosConError &&
+                    !tienePendiente &&
+                    deportes.isNotEmpty()
+
+        Log.d("SOLICITUDES_DEBUG", """
+        Solicitudes cargadas: $solicitudesCargadas
+        Catálogos listos: $catalogosListos
+        Error en catálogos: $catalogosConError
+        Solicitud pendiente: $tienePendiente
+        Total de deportes: ${todosLosDeportes.size}
+        Deportes disponibles: ${deportes.size}
+        Total de solicitudes: ${solicitudesActuales.size}
+        Mostrar botón: $puedeCrearSolicitud
+    """.trimIndent())
+
+        vista.btnNuevaSolicitud.visibility =
+            if (puedeCrearSolicitud) View.VISIBLE else View.GONE
+    }
+
+    // ----------------------------------------------------
+    // CONFIGURAR SPINNER
+    // ----------------------------------------------------
+
     private fun configurarSpinner(
-        spinner: android.widget.Spinner,
+        spinner: Spinner,
         opciones: List<String>
     ) {
         val contexto = context ?: return
@@ -207,27 +318,163 @@ class SolicitudesFragment : Fragment() {
         spinner.adapter = spinnerAdapter
     }
 
-    private fun enviarSolicitud() {
-        val vista = _binding ?: return
+    // ----------------------------------------------------
+    // MOSTRAR DIÁLOGO DE NUEVA SOLICITUD
+    // ----------------------------------------------------
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+    private fun mostrarDialogoNuevaSolicitud() {
+
+        if (!solicitudesCargadas ||
+            !catalogosListos ||
+            catalogosConError
+        ) {
             Toast.makeText(
                 requireContext(),
-                "Esta operación requiere Android 8.0 o superior.",
+                "Espera a que se carguen los datos.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (deportes.isEmpty() || tiposPerfil.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "No hay deportes o tipos de perfil disponibles.",
                 Toast.LENGTH_LONG
             ).show()
             return
         }
 
-        val indiceDeporte = vista.spDeportesSolicitud.selectedItemPosition
-        val indiceTipo = vista.spTipoPerfilSolicitud.selectedItemPosition
-        val indiceInstitucion =
-            vista.spInstitucionSolicitud.selectedItemPosition
-        val indiceEquipo = vista.spEquipoSolicitud.selectedItemPosition
+        val vistaDialogo = layoutInflater.inflate(
+            R.layout.dialog_nueva_solicitud,
+            null
+        )
 
-        if (deportes.isEmpty() || indiceDeporte <= 0 ||
-            indiceDeporte > deportes.size
-        ) {
+        val dialogo = AlertDialog.Builder(requireContext())
+            .setView(vistaDialogo)
+            .create()
+
+        val spDeporte =
+            vistaDialogo.findViewById<Spinner>(
+                R.id.spDeportesSolicitud
+            )
+
+        val spTipoPerfil =
+            vistaDialogo.findViewById<Spinner>(
+                R.id.spTipoPerfilSolicitud
+            )
+
+        val spInstitucion =
+            vistaDialogo.findViewById<Spinner>(
+                R.id.spInstitucionSolicitud
+            )
+
+        val spEquipo =
+            vistaDialogo.findViewById<Spinner>(
+                R.id.spEquipoSolicitud
+            )
+
+        val btnCrear =
+            vistaDialogo.findViewById<MaterialButton>(
+                R.id.btnCrearSolicitud
+            )
+
+        val btnCancelar =
+            vistaDialogo.findViewById<MaterialButton>(
+                R.id.btnCancelarSolicitud
+            )
+
+        configurarSpinner(
+            spDeporte,
+            listOf("Selecciona un deporte") +
+                    deportes.map { it.second }
+        )
+
+        configurarSpinner(
+            spTipoPerfil,
+            listOf("Selecciona un tipo de perfil") +
+                    tiposPerfil.map { it.second }
+        )
+
+        configurarSpinner(
+            spInstitucion,
+            listOf("Sin institución") +
+                    instituciones.map { it.second }
+        )
+
+        configurarSpinner(
+            spEquipo,
+            listOf("Sin equipo") +
+                    equipos.map { it.second }
+        )
+
+        btnCrear.setOnClickListener {
+            enviarSolicitud(
+                vistaDialogo,
+                dialogo
+            )
+        }
+
+        btnCancelar.setOnClickListener {
+            dialogo.dismiss()
+        }
+
+        dialogo.setOnShowListener {
+            dialogo.window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.92).toInt(),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        dialogo.show()
+    }
+
+    // ----------------------------------------------------
+    // ENVIAR SOLICITUD
+    // ----------------------------------------------------
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun enviarSolicitud(
+        vista: View,
+        dialogo: AlertDialog
+    ) {
+
+        val spDeporte =
+            vista.findViewById<Spinner>(
+                R.id.spDeportesSolicitud
+            )
+
+        val spTipo =
+            vista.findViewById<Spinner>(
+                R.id.spTipoPerfilSolicitud
+            )
+
+        val spInstitucion =
+            vista.findViewById<Spinner>(
+                R.id.spInstitucionSolicitud
+            )
+
+        val spEquipo =
+            vista.findViewById<Spinner>(
+                R.id.spEquipoSolicitud
+            )
+
+        val etNombre =
+            vista.findViewById<EditText>(
+                R.id.etNombreDeportivo
+            )
+
+        val btnCrear =
+            vista.findViewById<MaterialButton>(
+                R.id.btnCrearSolicitud
+            )
+
+        val indiceDeporte = spDeporte.selectedItemPosition
+        val indiceTipo = spTipo.selectedItemPosition
+        val indiceInstitucion = spInstitucion.selectedItemPosition
+        val indiceEquipo = spEquipo.selectedItemPosition
+
+        if (indiceDeporte <= 0 || indiceDeporte > deportes.size) {
             Toast.makeText(
                 requireContext(),
                 "Selecciona un deporte.",
@@ -236,9 +483,7 @@ class SolicitudesFragment : Fragment() {
             return
         }
 
-        if (tiposPerfil.isEmpty() || indiceTipo <= 0 ||
-            indiceTipo > tiposPerfil.size
-        ) {
+        if (indiceTipo <= 0 || indiceTipo > tiposPerfil.size) {
             Toast.makeText(
                 requireContext(),
                 "Selecciona un tipo de perfil.",
@@ -247,8 +492,11 @@ class SolicitudesFragment : Fragment() {
             return
         }
 
-        val deporteSeleccionado = deportes[indiceDeporte - 1].first
-        val tipoPerfilSeleccionado = tiposPerfil[indiceTipo - 1].first
+        val deporteSeleccionado =
+            deportes[indiceDeporte - 1].first
+
+        val tipoPerfilSeleccionado =
+            tiposPerfil[indiceTipo - 1].first
 
         val institucionSeleccionada: UUID? =
             if (indiceInstitucion > 0 &&
@@ -260,18 +508,21 @@ class SolicitudesFragment : Fragment() {
             }
 
         val equipoSeleccionado: UUID? =
-            if (indiceEquipo > 0 && indiceEquipo <= equipos.size) {
+            if (indiceEquipo > 0 &&
+                indiceEquipo <= equipos.size
+            ) {
                 equipos[indiceEquipo - 1].first
             } else {
                 null
             }
 
-        val nombreDeportivo = vista.etNombreDeportivo.text
+        val nombreDeportivo = etNombre.text
             ?.toString()
             ?.trim()
             ?.takeIf { it.isNotBlank() }
 
-        vista.btnCrearSolicitud.isEnabled = false
+        btnCrear.isEnabled = false
+        btnCrear.text = "Enviando..."
 
         repository.crearSolicitud(
             deporteId = deporteSeleccionado,
@@ -282,9 +533,7 @@ class SolicitudesFragment : Fragment() {
             fotoDeportiva = null
         ) { correcto, mensaje ->
 
-            val vistaActual = _binding ?: return@crearSolicitud
-
-            vistaActual.btnCrearSolicitud.isEnabled = true
+            if (_binding == null) return@crearSolicitud
 
             Toast.makeText(
                 requireContext(),
@@ -293,13 +542,11 @@ class SolicitudesFragment : Fragment() {
             ).show()
 
             if (correcto) {
-                vistaActual.etNombreDeportivo.text?.clear()
-                vistaActual.spDeportesSolicitud.setSelection(0)
-                vistaActual.spTipoPerfilSolicitud.setSelection(0)
-                vistaActual.spInstitucionSolicitud.setSelection(0)
-                vistaActual.spEquipoSolicitud.setSelection(0)
-
+                dialogo.dismiss()
                 cargarSolicitudes()
+            } else {
+                btnCrear.isEnabled = true
+                btnCrear.text = "Crear solicitud"
             }
         }
     }

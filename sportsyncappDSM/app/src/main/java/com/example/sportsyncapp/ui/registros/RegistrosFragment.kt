@@ -12,7 +12,7 @@ import com.example.sportsyncapp.connector.execute
 import com.example.sportsyncapp.connector.instance
 import com.example.sportsyncapp.databinding.FragmentRegistrosBinding
 import com.example.sportsyncapp.ui.main.MainActivity
-import com.example.sportsyncapp.ui.solicitudes.SolicitudesFragment
+import com.example.sportsyncapp.ui.solicitudes.SolicitudesAdminFragment
 import kotlinx.coroutines.launch
 
 class RegistrosFragment : Fragment() {
@@ -53,8 +53,8 @@ class RegistrosFragment : Fragment() {
 
         binding.btnVerTodasSolicitudes.setOnClickListener {
             abrirPantalla(
-                SolicitudesFragment(),
-                "solicitudes"
+                SolicitudesAdminFragment(),
+                "solicitudes_admin"
             )
         }
     }
@@ -106,7 +106,7 @@ class RegistrosFragment : Fragment() {
                                             ?: "Sin estado"
                                     )
                                     append("\nFecha: ")
-                                    append(inscripcion.fechaInscripcion)
+                                    append(formatearFecha(inscripcion.fechaInscripcion))
                                 }
                             }
                     }
@@ -150,7 +150,7 @@ class RegistrosFragment : Fragment() {
                                     append("\nEstado: ")
                                     append(solicitud.estado.nombreEstado)
                                     append("\nFecha: ")
-                                    append(solicitud.fechaSolicitud)
+                                    append(formatearFecha(solicitud.fechaSolicitud))
                                 }
                             }
                     }
@@ -167,6 +167,30 @@ class RegistrosFragment : Fragment() {
                         "No se pudieron cargar las solicitudes."
                 }
             }
+        }
+    }
+
+    private fun formatearFecha(fecha: Any?): String {
+        return try {
+            val fechaTexto = fecha.toString()
+
+            val patron = Regex(
+                """LocalDate\(year=(\d+), month=(\d+), day=(\d+)\)"""
+            )
+
+            val resultado = patron.find(fechaTexto)
+
+            if (resultado != null) {
+                val anio = resultado.groupValues[1]
+                val mes = resultado.groupValues[2].padStart(2, '0')
+                val dia = resultado.groupValues[3].padStart(2, '0')
+
+                "$dia/$mes/$anio"
+            } else {
+                fechaTexto
+            }
+        } catch (e: Exception) {
+            "Sin fecha"
         }
     }
 

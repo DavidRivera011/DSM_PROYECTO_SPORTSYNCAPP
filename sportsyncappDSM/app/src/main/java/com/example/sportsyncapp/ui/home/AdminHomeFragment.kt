@@ -12,6 +12,7 @@ import com.example.sportsyncapp.ui.equipos.EquiposFragment
 import com.example.sportsyncapp.ui.instituciones.InstitucionesFragment
 import com.example.sportsyncapp.ui.main.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.sportsyncapp.ui.deportes.DeportesFragment
 
 class AdminHomeFragment : Fragment() {
 
@@ -51,7 +52,7 @@ class AdminHomeFragment : Fragment() {
 
         // DEPORTES
         binding.cardAdminSports.setOnClickListener {
-            abrirSeccion(R.id.nav_sports)
+            abrirDeportes()
         }
 
         // INSTITUCIONES
@@ -88,6 +89,20 @@ class AdminHomeFragment : Fragment() {
         }
 
         bottomNavigation.selectedItemId = itemId
+    }
+
+    private fun abrirDeportes() {
+        val mainActivity = activity as? MainActivity
+
+        if (mainActivity == null) {
+            mostrarMensaje("No se pudo abrir Deportes.")
+            return
+        }
+
+        mainActivity.abrirPantallaSecundaria(
+            DeportesFragment(),
+            "deportes"
+        )
     }
 
     private fun abrirInstituciones() {

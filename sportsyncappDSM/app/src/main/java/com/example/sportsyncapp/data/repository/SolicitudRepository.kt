@@ -78,6 +78,94 @@ class SolicitudRepository {
         }
     }
 
+    // Consulta todas las solicitudes para el administrador.
+    fun obtenerSolicitudesAdmin(
+        alTerminar: (List<Solicitud>?) -> Unit
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val resultado: List<Solicitud>? = try {
+                val respuesta =
+                    conector.getSolicitudesAdmin.execute()
+
+                respuesta.data.solicitudess.map { dato ->
+                    Solicitud(
+                        id = dato.id,
+
+                        usuarioId = dato.usuario.id,
+                        nombreUsuario = dato.usuario.nombre,
+                        apellidoUsuario = dato.usuario.apellido,
+                        correoUsuario = dato.usuario.correo,
+
+                        deporteId = dato.deporte.id,
+                        nombreDeporte = dato.deporte.nombreDeporte,
+
+                        tipoPerfilId = dato.tipoPerfil.id,
+                        nombrePerfil = dato.tipoPerfil.nombrePerfil,
+
+                        institucionId = dato.institucion?.id,
+                        nombreInstitucion = dato.institucion?.nombre,
+
+                        equipoId = dato.equipo?.id,
+                        nombreEquipo = dato.equipo?.nombreEquipo,
+
+                        nombreDeportivo = dato.nombreDeportivo,
+                        fotoDeportiva = dato.fotoDeportiva,
+
+                        fechaSolicitud = dato.fechaSolicitud.toString(),
+
+                        estadoId = dato.estado.id,
+                        estadoNombre = dato.estado.nombreEstado,
+
+                        revisorNombre = "Revisión administrativa"
+                    )
+                }
+            } catch (error: Exception) {
+                Log.e(
+                    TAG,
+                    "Error al consultar todas las solicitudes",
+                    error
+                )
+                null
+            }
+
+            withContext(Dispatchers.Main) {
+                alTerminar(resultado)
+            }
+        }
+    }
+
+    // Aprobar o rechazar una solicitud.
+    // Solo el administrador puede ejecutar esta operación.
+    fun actualizarSolicitud(
+        solicitudId: UUID,
+        estadoId: UUID,
+        alTerminar: (Boolean, String) -> Unit
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var correcto = false
+            var mensaje = "No se pudo actualizar la solicitud."
+
+            try {
+                conector.updateSolicitud.execute(
+                    id = solicitudId,
+                    estadoId = estadoId
+                )
+
+                correcto = true
+                mensaje = "Solicitud actualizada correctamente."
+
+            } catch (error: Exception) {
+                Log.e(TAG, "Error al actualizar solicitud", error)
+                mensaje = error.localizedMessage
+                    ?: "Ocurrió un error al actualizar la solicitud."
+            }
+
+            withContext(Dispatchers.Main) {
+                alTerminar(correcto, mensaje)
+            }
+        }
+    }
+
     // Obtener los deportes disponibles para el formulario.
     fun obtenerDeportes(
         alTerminar: (List<Pair<UUID, String>>?) -> Unit
